@@ -1,0 +1,48 @@
+<configuration scan="true" scanPeriod="30 seconds" >
+    <!-- Rescan logging setup every 30 seconds -->
+
+    <!-- Rolling file appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <file>${catalina.base}/logs/nmdcmodules/modules_fileread.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover -->
+            <fileNamePattern>${catalina.base}/logs/nmdcmodules/modules_fileread.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Keep 30 days' worth of history -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Rolling file appender -->
+    <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <file>${catalina.base}/logs/nmdcmodules/modules_fileread_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover -->
+            <fileNamePattern>${catalina.base}/logs/nmdcmodules/modules_fileread_error.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Keep 30 days' worth of history -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="FILEERROR" />
+    </root>
+</configuration>
