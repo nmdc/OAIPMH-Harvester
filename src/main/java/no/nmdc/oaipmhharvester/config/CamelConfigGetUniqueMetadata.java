@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * @author kjetilf
  */
 @Configuration
-public class CamelConfig extends SingleRouteCamelConfiguration implements InitializingBean {
+public class CamelConfigGetUniqueMetadata extends SingleRouteCamelConfiguration implements InitializingBean {
 
     @Autowired
     @Qualifier("harvesterConf")
@@ -34,14 +34,9 @@ public class CamelConfig extends SingleRouteCamelConfiguration implements Initia
 
             @Override
             public void configure() {
-                String harvestperiod = "3600000";
-                if (harvesterConfiguration.getString(HARVEST_PERIOD) != null && !harvesterConfiguration.getString(HARVEST_PERIOD).isEmpty()) {
-                    harvestperiod = harvesterConfiguration.getString(HARVEST_PERIOD);
-                }
 
-                from("timer://harvesttimer?fixedRate=true&period=".concat(harvestperiod))
+                from("file:" + harvesterConfiguration.getString("save.path") + "?noop=true&idempotentKey=${file:name}-${file:modified}")
                         .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
-                        .to("harvestService")
                         .to("log:end?level=INFO")
                         .to("jms:queue:nmdc/harvest-validate");
             }

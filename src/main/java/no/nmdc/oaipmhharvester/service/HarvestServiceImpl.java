@@ -2,6 +2,7 @@ package no.nmdc.oaipmhharvester.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class HarvestServiceImpl implements HarvestService {
         for (RecordType record : listrec.getRecordArray()) {
             File file = new File(harvesterConfiguration.getString("save.path").concat(record.getHeader().getIdentifier()).concat(".xml"));
             record.save(file);
-            files.put(record.getHeader().getIdentifier(), file.getAbsolutePath());
+//            files.put(record.getHeader().getIdentifier(), file.getAbsolutePath());
         }
         if (listrec.getResumptionToken() != null && listrec.getResumptionToken().getStringValue() != null && !listrec.getResumptionToken().getStringValue().isEmpty()) {
             parseAndWriteMetadata(baseUrl, mft, new URL(baseUrl.concat("?verb=ListRecords").concat("&resumptionToken=").concat(listrec.getResumptionToken().getStringValue())), files);
