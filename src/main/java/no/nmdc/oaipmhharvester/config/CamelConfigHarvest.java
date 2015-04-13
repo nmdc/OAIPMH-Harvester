@@ -1,50 +1,35 @@
 package no.nmdc.oaipmhharvester.config;
 
+import java.util.Arrays;
+import java.util.List;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.spring.javaconfig.SingleRouteCamelConfiguration;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.camel.spring.javaconfig.CamelConfiguration;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * The route copnfiguration for the validation.
+ * The route configuration for oai-pmh harvesting.
  *
- * @author kjetilf
+ * @author sjurl
  */
 @Configuration
-public class CamelConfigHarvest extends SingleRouteCamelConfiguration implements InitializingBean {
+public class CamelConfigHarvest extends CamelConfiguration implements InitializingBean {
 
     @Autowired
-    @Qualifier("harvesterConf")
-    private PropertiesConfiguration harvesterConfiguration;
+    private GetUniqueMetadataRoute getUniqueMetadataRoute;
 
-    private static final String HARVEST_PERIOD = "harvest.period";
+    @Autowired
+    private HarvestRoute harvestRoute;
 
     /**
-     * The route 1. set up timer. 2. Harvest data from configured servers. 3.
-     * Send them to the validation queue.
+     * Adds all routes to the camel config
      *
      * @return The route.
      */
     @Override
-    public RouteBuilder route() {
-        return new RouteBuilder() {
-
-            @Override
-            public void configure() {
-                String harvestperiod = "3600000";
-                if (harvesterConfiguration.getString(HARVEST_PERIOD) != null && !harvesterConfiguration.getString(HARVEST_PERIOD).isEmpty()) {
-                    harvestperiod = harvesterConfiguration.getString(HARVEST_PERIOD);
-                }
-
-                from("timer://harvesttimer?fixedRate=true&period=".concat(harvestperiod))
-                        .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
-                        .to("harvestService")
-                        .to("log:end?level=INFO");
-            }
-        };
+    public List<RouteBuilder> routes() {
+        return Arrays.asList(getUniqueMetadataRoute, harvestRoute);
     }
 
     @Override

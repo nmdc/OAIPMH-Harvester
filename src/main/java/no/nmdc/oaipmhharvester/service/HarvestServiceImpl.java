@@ -2,26 +2,18 @@ package no.nmdc.oaipmhharvester.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.xmlbeans.XmlException;
-import org.openarchives.oai.x20.ListMetadataFormatsType;
-import org.openarchives.oai.x20.ListRecordsType;
 import org.openarchives.oai.x20.MetadataFormatType;
-import org.openarchives.oai.x20.OAIPMHDocument;
 import org.openarchives.oai.x20.RecordType;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
- * Class that harvests OAI-PMH servers and stores the results to a metadata
- * files and returns a map of all the files and full path to the files
  *
  * @author sjurl
  */
@@ -32,40 +24,48 @@ public class HarvestServiceImpl implements HarvestService {
     @Qualifier("harvesterConf")
     private PropertiesConfiguration harvesterConfiguration;
 
+    @Autowired
+    private OAIPMHService oaipmhService;
+
     @Override
-    public Map<String, Object> harvest() throws XmlException, IOException {
+    public void harvest() {
         List<String> baseUrls = (List<String>) (List<?>) harvesterConfiguration.getList("base.url");
         List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList("metadata.format");
-        Map<String, Object> files = new HashMap<>();
-        
+
         for (String baseUrl : baseUrls) {
-            URL url = new URL(baseUrl.concat("?verb=ListMetadataFormats"));
-            OAIPMHDocument document = OAIPMHDocument.Factory.parse(url);
-            ListMetadataFormatsType formatlist = document.getOAIPMH().getListMetadataFormats();
-            for (MetadataFormatType mft : formatlist.getMetadataFormatArray()) {
-                for (String metadataFormat : metadataFormats) {
-                    if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
-                        URL listrecords = new URL(baseUrl.concat("?verb=ListRecords&metadataPrefix=").concat(mft.getMetadataPrefix()));
-                        parseAndWriteMetadata(baseUrl, mft, listrecords, files);
-                        break;
+            List<MetadataFormatType> metadataFormatTypes = null;
+            try {
+                metadataFormatTypes = oaipmhService.getListMetadataFormat(baseUrl, null);
+            } catch (XmlException | IOException ex) {
+                LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while getting metadata formats from: " + baseUrl, ex);
+            }
+            if (metadataFormatTypes != null) {
+                for (MetadataFormatType mft : metadataFormatTypes) {
+                    for (String metadataFormat : metadataFormats) {
+                        if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
+                            try {
+                                parseAndWriteMetadata(baseUrl, mft);
+                            } catch (XmlException | IOException | OAIPMHException ex) {
+                                LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while harvesting from: "
+                                        + baseUrl + "\nUsing format: " + mft.getMetadataPrefix(), ex);
+                            }
+                            oaipmhService.setCurrentResumptionToken(null);
+                            break;
+                        }
                     }
                 }
             }
-
         }
-        return files;
     }
 
-    private void parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, URL listrecords, Map<String, Object> files) throws XmlException, MalformedURLException, IOException {
-        OAIPMHDocument document = OAIPMHDocument.Factory.parse(listrecords);
-        ListRecordsType listrec = document.getOAIPMH().getListRecords();
-        for (RecordType record : listrec.getRecordArray()) {
+    private void parseAndWriteMetadata(String baseUrl, MetadataFormatType mft) throws XmlException, IOException, OAIPMHException {
+        List<RecordType> records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, oaipmhService.getCurrentResumptionToken(), null);
+        for (RecordType record : records) {
             File file = new File(harvesterConfiguration.getString("save.path").concat(record.getHeader().getIdentifier()).concat(".xml"));
             record.save(file);
-//            files.put(record.getHeader().getIdentifier(), file.getAbsolutePath());
         }
-        if (listrec.getResumptionToken() != null && listrec.getResumptionToken().getStringValue() != null && !listrec.getResumptionToken().getStringValue().isEmpty()) {
-            parseAndWriteMetadata(baseUrl, mft, new URL(baseUrl.concat("?verb=ListRecords").concat("&resumptionToken=").concat(listrec.getResumptionToken().getStringValue())), files);
+        if (oaipmhService.getCurrentResumptionToken() != null) {
+            parseAndWriteMetadata(baseUrl, mft);
         }
     }
 }

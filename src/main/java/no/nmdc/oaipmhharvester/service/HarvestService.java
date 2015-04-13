@@ -1,11 +1,8 @@
 package no.nmdc.oaipmhharvester.service;
 
-import java.io.IOException;
-import java.util.Map;
-import org.apache.xmlbeans.XmlException;
-
 /**
- * Service interface for harvesting OAI-PMH servers
+ * Class that harvests OAI-PMH servers and stores the results to metadata
+ * files
  *
  * @author sjurl
  */
@@ -14,9 +11,6 @@ public interface HarvestService {
     /**
      * Performs harvesting of OAI-PMH servers
      *
-     * @return
-     * @throws XmlException
-     * @throws IOException
      */
-    Map<String, Object> harvest() throws XmlException, IOException;
+    void harvest();
 }
