@@ -62,7 +62,7 @@ public class HarvestServiceImpl implements HarvestService {
         List<RecordType> records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, oaipmhService.getCurrentResumptionToken(), null);
         for (RecordType record : records) {
             File file = new File(harvesterConfiguration.getString("save.path").concat(record.getHeader().getIdentifier()).concat(".xml"));
-            record.save(file);
+            record.getMetadata().save(file);
         }
         if (oaipmhService.getCurrentResumptionToken() != null) {
             parseAndWriteMetadata(baseUrl, mft);
