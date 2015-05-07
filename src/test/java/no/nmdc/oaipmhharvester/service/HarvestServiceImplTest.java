@@ -40,7 +40,8 @@ public class HarvestServiceImplTest {
         @Bean(name = "harvesterConf")
         public PropertiesConfiguration harvesterConfiguration() {
             PropertiesConfiguration pc = new PropertiesConfiguration();
-            pc.addProperty("base.url", Arrays.asList("test"));
+            pc.addProperty("servers.to.harvest", Arrays.asList("test"));
+            pc.addProperty("test.baseurl", Arrays.asList("test"));
             pc.addProperty("metadata.format", Arrays.asList("test.format"));
             pc.addProperty("save.path", System.getProperty("java.io.tmpdir").concat(System.getProperty("file.separator")));
             return pc;
