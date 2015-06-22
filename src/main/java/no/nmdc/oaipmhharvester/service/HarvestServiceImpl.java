@@ -62,15 +62,17 @@ public class HarvestServiceImpl implements HarvestService {
 
     private void parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set) throws XmlException, IOException, OAIPMHException {
         List<RecordType> records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, oaipmhService.getCurrentResumptionToken(), set);
-        for (RecordType record : records) {
-            String identifier = record.getHeader().getIdentifier();
-            identifier = identifier.replace(":", "_");
-            identifier = identifier.replace("/", "-");
-            File file = new File(harvesterConfiguration.getString("save.path").concat(identifier).concat(".xml"));
-            record.getMetadata().save(file);
-        }
-        if (oaipmhService.getCurrentResumptionToken() != null) {
-            parseAndWriteMetadata(baseUrl, mft, set);
+        if (records != null) {
+            for (RecordType record : records) {
+                String identifier = record.getHeader().getIdentifier();
+                identifier = identifier.replace(":", "_");
+                identifier = identifier.replace("/", "-");
+                File file = new File(harvesterConfiguration.getString("save.path").concat(identifier).concat(".xml"));
+                record.getMetadata().save(file);
+            }
+            if (oaipmhService.getCurrentResumptionToken() != null) {
+                parseAndWriteMetadata(baseUrl, mft, set);
+            }
         }
     }
 }

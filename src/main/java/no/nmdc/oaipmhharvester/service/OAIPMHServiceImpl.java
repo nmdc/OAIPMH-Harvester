@@ -20,15 +20,21 @@ import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.OAIPMHDocument;
 import org.openarchives.oai.x20.RecordType;
 import org.openarchives.oai.x20.SetType;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * 
+ *
  * @author sjurl
  */
 @Service
 public class OAIPMHServiceImpl implements OAIPMHService {
+
+    /**
+     * Class logger.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(OAIPMHServiceImpl.class);
 
     private static String currentResumptionToken = null;
 
@@ -73,14 +79,18 @@ public class OAIPMHServiceImpl implements OAIPMHService {
 
         OAIPMHDocument document = OAIPMHDocument.Factory.parse(performUrl);
         ListRecordsType listrec = document.getOAIPMH().getListRecords();
-        List<RecordType> records = Arrays.asList(listrec.getRecordArray());
+        List<RecordType> records = null;
+        if (listrec != null) {
+            records = Arrays.asList(listrec.getRecordArray());
 
-        if (listrec.getResumptionToken() != null && listrec.getResumptionToken().getStringValue() != null && !listrec.getResumptionToken().getStringValue().isEmpty()) {
-            currentResumptionToken = listrec.getResumptionToken().getStringValue();
+            if (listrec.getResumptionToken() != null && listrec.getResumptionToken().getStringValue() != null && !listrec.getResumptionToken().getStringValue().isEmpty()) {
+                currentResumptionToken = listrec.getResumptionToken().getStringValue();
+            } else {
+                currentResumptionToken = null;
+            }
         } else {
-            currentResumptionToken = null;
+            logger.warn("Error getting records {}", document.toString());
         }
-
         return records;
     }
 
