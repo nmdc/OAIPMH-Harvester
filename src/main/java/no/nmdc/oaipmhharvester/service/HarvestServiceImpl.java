@@ -68,7 +68,11 @@ public class HarvestServiceImpl implements HarvestService {
                 identifier = identifier.replace(":", "_");
                 identifier = identifier.replace("/", "-");
                 File file = new File(harvesterConfiguration.getString("save.path").concat(identifier).concat(".xml"));
-                record.getMetadata().save(file);
+                if (record.getMetadata() != null) {
+                    record.getMetadata().save(file);
+                } else {
+                    LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
+                }
             }
             if (oaipmhService.getCurrentResumptionToken() != null) {
                 parseAndWriteMetadata(baseUrl, mft, set);

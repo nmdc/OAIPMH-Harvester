@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DIF xsi:schemaLocation="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/ http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.8.4.xsd" xmlns="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Entry_ID>777e66b3-24ce-4f24-863e-fde100d5184d</Entry_ID>
+  <Entry_Title>Sea Ice Macrofauna 1947-2012</Entry_Title>
+  <Data_Set_Citation>
+    <Dataset_Creator>Malin Daase</Dataset_Creator>
+    <Dataset_Title>Sea Ice Macrofauna 1947-2012</Dataset_Title>
+    <Dataset_Release_Place>Tromsø, Norway</Dataset_Release_Place>
+    <Dataset_Publisher>Norwegian Polar Institute</Dataset_Publisher>
+    <Online_Resource>http://data.npolar.no/dataset/777e66b3-24ce-4f24-863e-fde100d5184d</Online_Resource>
+  </Data_Set_Citation>
+  <Discipline>
+    <Discipline_Name>BIOLOGY</Discipline_Name>
+  </Discipline>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>BIOSPHERE</Topic>
+    <Term>ECOLOGICAL DYNAMICS</Term>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>MISSING-TOPIC</Topic>
+    <Term>MISSING-TERM</Term>
+  </Parameters>
+  <ISO_Topic_Category>BIOTA</ISO_Topic_Category>
+  <ISO_Topic_Category>OCEANS</ISO_Topic_Category>
+  <Keyword>biology</Keyword>
+  <Keyword>ecology</Keyword>
+  <Keyword>marine</Keyword>
+  <Data_Set_Progress>Planned</Data_Set_Progress>
+  <Use_Constraints>Open data: Free to reuse if attributed to the Norwegian Polar Institute</Use_Constraints>
+  <Originating_Center>Norwegian Polar Institute (NO/NPI)</Originating_Center>
+  <Data_Center>
+    <Data_Center_Name>
+      <Short_Name>NO/NPI</Short_Name>
+      <Long_Name>Norwegian Polar Institute</Long_Name>
+    </Data_Center_Name>
+    <Data_Set_ID>777e66b3-24ce-4f24-863e-fde100d5184d</Data_Set_ID>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <First_Name/>
+      <Last_Name/>
+      <Email/>
+    </Personnel>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <Last_Name>Norwegian Polar Data</Last_Name>
+      <Email>data[*]npolar.no</Email>
+    </Personnel>
+  </Data_Center>
+  <Distribution>
+    <Distribution_Media>Online Internet (HTTP)</Distribution_Media>
+    <Distribution_Format>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</Distribution_Format>
+  </Distribution>
+  <Summary>
+    <Abstract>Sea ice macrofauna comprises invertebrates (>2 mm) that live associated with or in sea ice.&#13;
+&#13;
+The dataset contains records of presence and absences and abundance data on sea ice macrofauna from the entire Arctic.&#13;
+&#13;
+The source of the data is published literature (peer-reviewed articles, public databases, grey literature) as well as unpublished records. &#13;
+&#13;
+For each record the data source, sample date, sample position and environmental background data (as far as available) is provided. The database includes data sampled between 1947-2012.&#13;
+&#13;
+This database is the product of a joined effort of the Sea Ice Expert Network within the Circumpolar Biodiversity Monitoring Program.&#13;
+&#13;
+Authors and data contributors: Malin Daase, Haakon Hop, Rolf Gradinger, Bodil Bluhm, Igor Melnikov, Jørgen Berge, Ole Jørgen Lønne, Bjørn Gulliksen, Iris Werner, Carolin Foppa Arndt</Abstract>
+  </Summary>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET DATA</Type>
+    </URL_Content_Type>
+    <URL>http://public.data.npolar.no/777e66b3-24ce-4f24-863e-fde100d5184d/seaice_macrofauna_data_2014.xlsx</URL>
+    <Description>Sea Ice Macrofauna Data (2014) (application/vnd.openxmlformats-officedocument.spreadsheetml.sheet)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://www.arctic-council.org/index.php/en/environment-and-people/biodiversity/circumpolar-biodiversity-monitoring-program</URL>
+    <Description>Circumpolar Biodiversity Monitoring Program (text/html)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET SERVICE</Type>
+    </URL_Content_Type>
+    <URL>https://api.npolar.no/dataset/777e66b3-24ce-4f24-863e-fde100d5184d</URL>
+    <Description>Edit URI (application/json)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>https://api.npolar.no/dataset/777e66b3-24ce-4f24-863e-fde100d5184d.xml</URL>
+    <Description>DIF XML (application/xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>https://api.npolar.no/dataset/777e66b3-24ce-4f24-863e-fde100d5184d.iso</URL>
+    <Description>ISO 19139 XML (application/vnd.iso.19139+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>https://api.npolar.no/dataset/777e66b3-24ce-4f24-863e-fde100d5184d.atom</URL>
+    <Description>Atom entry XML (application/atom+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://data.npolar.no/dataset/777e66b3-24ce-4f24-863e-fde100d5184d</URL>
+    <Description>HTML (text/html)</Description>
+  </Related_URL>
+  <Originating_Metadata_Node>Norwegian Polar Institute (NO/NPI)</Originating_Metadata_Node>
+  <Metadata_Name>CEOS IDN DIF</Metadata_Name>
+  <Metadata_Version>9.8.4</Metadata_Version>
+  <DIF_Creation_Date>2014-04-25</DIF_Creation_Date>
+  <Last_DIF_Revision_Date>2014-05-20</Last_DIF_Revision_Date>
+  <DIF_Revision_History>2014-04-25, created Trevor Lovett (trevor@npolar.no)
+2014-04-25, edited Trevor Lovett (trevor@npolar.no)
+2014-04-30, edited Conrad Helgeland (conrad@npolar.no)
+2014-05-12, edited Conrad Helgeland (conrad@npolar.no)</DIF_Revision_History>
+  <Private>False</Private>
+  <Extended_Metadata>
+    <Metadata>
+      <Group>no.npolar.api</Group>
+      <Name>dataset.rev</Name>
+      <Value>15-2ddac426ef6ee82e19428126968a85a7</Value>
+    </Metadata>
+    <Metadata>
+      <Group>gov.nasa.gsfc.gcmd</Group>
+      <Name>metadata.keyword_version</Name>
+      <Value>8.0</Value>
+    </Metadata>
+  </Extended_Metadata>
+</DIF>

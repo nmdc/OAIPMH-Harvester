@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="http://www.imr.no/formats/stox/v1"
+           xmlns="http://www.imr.no/formats/stox/v1">
+
+    <xs:element name="Projects" type="ProjectsType" />
+
+    <!--
+        Stox type.
+    -->
+    <xs:complexType name="ProjectsType">
+        <xs:sequence>
+            <xs:element name="StoxProject" type="StoxProjectType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        Stox project type
+    -->
+    <xs:complexType name="StoxProject">
+        <xs:sequence>
+            <xs:element name="Meta" type="MetaType"/>
+            <xs:element name="Models" type="ModelsType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        Meta type.
+    -->
+    <xs:complexType name="MetaType">
+        <xs:sequence>
+            <xs:element name="ProjectName" type="xs:string"/>
+            <xs:element name="Description" type="xs:string"/>
+            <xs:element name="SurveyTimeseriesName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        Meta type.
+    -->
+    <xs:complexType name="ModelsType">
+        <xs:sequence>
+            <xs:element name="Process" type="xs:string"/>
+            <xs:element name="Description" type="xs:string"/>
+            <xs:element name="SurveyTimeseriesName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

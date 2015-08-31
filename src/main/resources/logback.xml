@@ -7,10 +7,10 @@
             <level>INFO</level>
         </filter>
 
-        <file>${catalina.base}/logs/nmdcmodules/oaipmh-harvester.log</file>
+        <file>${catalina.base}/logs/harvesting/oaipmh-harvester.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover -->
-            <fileNamePattern>${catalina.base}/logs/nmdcmodules/oaipmh-harvester.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/harvesting/oaipmh-harvester.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- Keep 30 days' worth of history -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
@@ -26,10 +26,10 @@
             <level>ERROR</level>
         </filter>
 
-        <file>${catalina.base}/logs/nmdcmodules/oaipmh-harvester_error.log</file>
+        <file>${catalina.base}/logs/harvesting/oaipmh-harvester_error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover -->
-            <fileNamePattern>${catalina.base}/logs/nmdcmodules/oaipmh-harvester_error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/harvesting/oaipmh-harvester_error.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- Keep 30 days' worth of history -->
             <maxHistory>60</maxHistory>

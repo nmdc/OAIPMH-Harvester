@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DIF xsi:schemaLocation="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/ http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.8.4.xsd" xmlns="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Entry_ID>6ade933d-05ba-5b89-9291-24261ef17633</Entry_ID>
+  <Entry_Title>Snow and Ice Radio echo data</Entry_Title>
+  <Data_Set_Citation>
+    <Dataset_Creator>Jon Ove Hagen</Dataset_Creator>
+    <Dataset_Title>Snow and Ice Radio echo data</Dataset_Title>
+    <Dataset_Release_Place>Tromsø, Norway</Dataset_Release_Place>
+    <Dataset_Publisher>Norwegian Polar Institute</Dataset_Publisher>
+    <Online_Resource>http://data.npolar.no/dataset/6ade933d-05ba-5b89-9291-24261ef17633</Online_Resource>
+  </Data_Set_Citation>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Jon Ove</First_Name>
+    <Last_Name>Hagen</Last_Name>
+    <Email/>
+  </Personnel>
+  <Discipline>
+    <Discipline_Name/>
+  </Discipline>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>SEA ICE</Term>
+  </Parameters>
+  <Keyword>seaice</Keyword>
+  <Temporal_Coverage>
+    <Start_Date>1992-01-01</Start_Date>
+  </Temporal_Coverage>
+  <Data_Set_Progress>Complete</Data_Set_Progress>
+  <Use_Constraints>Open data: Free to reuse if attributed to the Norwegian Polar Institute</Use_Constraints>
+  <Originating_Center>Norwegian Polar Institute (NO/NPI)</Originating_Center>
+  <Data_Center>
+    <Data_Center_Name>
+      <Short_Name>NO/NPI</Short_Name>
+      <Long_Name>Norwegian Polar Institute</Long_Name>
+    </Data_Center_Name>
+    <Data_Center_URL>http://npolar.no</Data_Center_URL>
+    <Data_Set_ID>6ade933d-05ba-5b89-9291-24261ef17633</Data_Set_ID>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <First_Name/>
+      <Last_Name/>
+      <Email/>
+    </Personnel>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <Last_Name>Norwegian Polar Data</Last_Name>
+      <Email>data[*]npolar.no</Email>
+    </Personnel>
+  </Data_Center>
+  <Reference>Rapport fra J.O. Hagen fins.</Reference>
+  <Summary>
+    <Abstract>Ice thickness data collected from radio echo measurements. Part of the EU project, "Surge".</Abstract>
+  </Summary>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET SERVICE</Type>
+    </URL_Content_Type>
+    <URL>http://risapi.data.npolar.no/oai?verb=GetRecord&amp;metadataPrefix=dif&amp;identifier=oai:ris.npolar.no:org.polarresearch-316</URL>
+    <Description>Via (application/json)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET SERVICE</Type>
+    </URL_Content_Type>
+    <URL>https://api.npolar.no/dataset/6ade933d-05ba-5b89-9291-24261ef17633</URL>
+    <Description>Edit URI (application/json)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/6ade933d-05ba-5b89-9291-24261ef17633.xml</URL>
+    <Description>DIF XML (application/xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/6ade933d-05ba-5b89-9291-24261ef17633.iso</URL>
+    <Description>ISO 19139 XML (application/vnd.iso.19139+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/6ade933d-05ba-5b89-9291-24261ef17633.atom</URL>
+    <Description>Atom entry XML (application/atom+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://data.npolar.no/dataset/6ade933d-05ba-5b89-9291-24261ef17633</URL>
+    <Description>HTML (text/html)</Description>
+  </Related_URL>
+  <Originating_Metadata_Node>Norwegian Polar Institute (NO/NPI)</Originating_Metadata_Node>
+  <Metadata_Name>CEOS IDN DIF</Metadata_Name>
+  <Metadata_Version>9.8.4</Metadata_Version>
+  <DIF_Creation_Date>2008-03-27</DIF_Creation_Date>
+  <Last_DIF_Revision_Date>2014-05-20</Last_DIF_Revision_Date>
+  <DIF_Revision_History>2008-03-27, created jack@npolar.no (jack@npolar.no)</DIF_Revision_History>
+  <Private>False</Private>
+  <Extended_Metadata>
+    <Metadata>
+      <Group>no.npolar.api</Group>
+      <Name>dataset.rev</Name>
+      <Value>17-1f0bfdf8efa32752b7613b2248842fd8</Value>
+    </Metadata>
+    <Metadata>
+      <Group>gov.nasa.gsfc.gcmd</Group>
+      <Name>metadata.keyword_version</Name>
+      <Value>8.0</Value>
+    </Metadata>
+  </Extended_Metadata>
+</DIF>

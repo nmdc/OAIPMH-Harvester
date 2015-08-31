@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SurveyTimeSeries>
+    <SurveyTimeSerie  surveytimeseriesname="LoddeBarentshav">
+        <SurveyTimeseriesDescription>Mengdeindeks for torsk i Barentshavet om vinteren (Bottom trawl swept area estimate for BS cod in winter)</SurveyTimeseriesDescription>
+        <TimeStart>1981</TimeStart>
+        <TimeStop>ongoing</TimeStop>
+    </SurveyTimeSerie>
+    <CruiseSeries>
+        <CrusieSerie>Økotoktet</CrusieSerie>
+        <CruiseSerie>Loddetoktet</CrusieSerie>
+    </CruiseSeries>
+    <Coverage coverageid="2014_05">
+        <StoX stoxprojectid="X" />
+    </Coverage>
+</SurveyTimeSerie>

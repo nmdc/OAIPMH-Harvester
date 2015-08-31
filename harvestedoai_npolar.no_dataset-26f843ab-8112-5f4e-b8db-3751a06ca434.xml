@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DIF xsi:schemaLocation="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/ http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.8.4.xsd" xmlns="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Entry_ID>26f843ab-8112-5f4e-b8db-3751a06ca434</Entry_ID>
+  <Entry_Title>Ecological role of polar cod in the marine food web of Kongsfjorden (MariClim)</Entry_Title>
+  <Data_Set_Citation>
+    <Dataset_Creator>Fredrik Bjørn Broms, Haakon Hop</Dataset_Creator>
+    <Dataset_Title>Ecological role of polar cod in the marine food web of Kongsfjorden (MariClim)</Dataset_Title>
+    <Dataset_Release_Place>Tromsø, Norway</Dataset_Release_Place>
+    <Dataset_Publisher>Norwegian Polar Institute</Dataset_Publisher>
+    <Online_Resource>http://data.npolar.no/dataset/26f843ab-8112-5f4e-b8db-3751a06ca434</Online_Resource>
+  </Data_Set_Citation>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Fredrik Bjørn</First_Name>
+    <Last_Name>Broms</Last_Name>
+    <Email>fredrik@npolar.no</Email>
+  </Personnel>
+  <Personnel>
+    <Role>Technical Contact</Role>
+    <First_Name>Anette</First_Name>
+    <Last_Name>Wold</Last_Name>
+    <Email>anette.wold@npolar.no</Email>
+  </Personnel>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Haakon</First_Name>
+    <Last_Name>Hop</Last_Name>
+    <Email>Haakon.Hop@npolar.no</Email>
+  </Personnel>
+  <Discipline>
+    <Discipline_Name>BIOLOGY</Discipline_Name>
+  </Discipline>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>AQUATIC SCIENCES</Term>
+    <Variable_Level_1>FISHERIES</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>COASTAL PROCESSES</Term>
+    <Variable_Level_1>FJORDS</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>OCEAN ACOUSTICS</Term>
+    <Variable_Level_1>ACOUSTIC SCATTERING</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>OCEAN TEMPERATURE</Term>
+    <Variable_Level_1>WATER TEMPERATURE</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>BIOSPHERE</Topic>
+    <Term>ECOLOGICAL DYNAMICS</Term>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>MISSING-TOPIC</Topic>
+    <Term>MISSING-TERM</Term>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>SALINITY/DENSITY</Term>
+  </Parameters>
+  <ISO_Topic_Category>OCEANS</ISO_Topic_Category>
+  <Keyword>Climate</Keyword>
+  <Keyword>Energetics</Keyword>
+  <Keyword>Energy Transfer</Keyword>
+  <Keyword>Food Web Interactions</Keyword>
+  <Keyword>Lipids</Keyword>
+  <Keyword>Physiology</Keyword>
+  <Keyword>Stable isotopes</Keyword>
+  <Keyword>Not Available</Keyword>
+  <Keyword>biology</Keyword>
+  <Keyword>marine</Keyword>
+  <Keyword>oceanography</Keyword>
+  <Temporal_Coverage>
+    <Start_Date>2005-11-01</Start_Date>
+    <Stop_Date>2009-07-01</Stop_Date>
+  </Temporal_Coverage>
+  <Data_Set_Progress>In Work</Data_Set_Progress>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>78.9651307</Southernmost_Latitude>
+    <Northernmost_Latitude>78.9651307</Northernmost_Latitude>
+    <Westernmost_Longitude>11.8569355</Westernmost_Longitude>
+    <Easternmost_Longitude>11.8569355</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>79.033295</Southernmost_Latitude>
+    <Northernmost_Latitude>79.033295</Northernmost_Latitude>
+    <Westernmost_Longitude>10.8120855</Westernmost_Longitude>
+    <Easternmost_Longitude>10.8120855</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>78.2494325</Southernmost_Latitude>
+    <Northernmost_Latitude>78.2494325</Northernmost_Latitude>
+    <Westernmost_Longitude>14.78042</Westernmost_Longitude>
+    <Easternmost_Longitude>14.78042</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>78.9947663</Southernmost_Latitude>
+    <Northernmost_Latitude>78.9947663</Northernmost_Latitude>
+    <Westernmost_Longitude>10.1573606</Westernmost_Longitude>
+    <Easternmost_Longitude>10.1573606</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>79.1225453</Southernmost_Latitude>
+    <Northernmost_Latitude>79.1225453</Northernmost_Latitude>
+    <Westernmost_Longitude>11.6797199</Westernmost_Longitude>
+    <Easternmost_Longitude>11.6797199</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>78.449295</Southernmost_Latitude>
+    <Northernmost_Latitude>78.449295</Northernmost_Latitude>
+    <Westernmost_Longitude>17.3396488</Westernmost_Longitude>
+    <Easternmost_Longitude>17.3396488</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>ATLANTIC OCEAN</Location_Type>
+    <Location_Subregion1>NORTH ATLANTIC OCEAN</Location_Subregion1>
+    <Location_Subregion2>SVALBARD AND JAN MAYEN</Location_Subregion2>
+    <Detailed_Location>Kongsfjorden</Detailed_Location>
+  </Location>
+  <Location>
+    <Location_Category>GEOGRAPHIC REGION</Location_Category>
+    <Location_Type>POLAR</Location_Type>
+  </Location>
+  <Location>
+    <Location_Category>GEOGRAPHIC REGION</Location_Category>
+    <Location_Type>ARCTIC</Location_Type>
+  </Location>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>ATLANTIC OCEAN</Location_Type>
+    <Location_Subregion1>NORTH ATLANTIC OCEAN</Location_Subregion1>
+    <Location_Subregion2>SVALBARD AND JAN MAYEN</Location_Subregion2>
+    <Detailed_Location>Kongsfjorddjupet</Detailed_Location>
+  </Location>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>ATLANTIC OCEAN</Location_Type>
+    <Location_Subregion1>NORTH ATLANTIC OCEAN</Location_Subregion1>
+    <Location_Subregion2>SVALBARD AND JAN MAYEN</Location_Subregion2>
+    <Detailed_Location>Isfjorden</Detailed_Location>
+  </Location>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>ATLANTIC OCEAN</Location_Type>
+    <Location_Subregion1>NORTH ATLANTIC OCEAN</Location_Subregion1>
+    <Location_Subregion2>SVALBARD AND JAN MAYEN</Location_Subregion2>
+    <Detailed_Location>Kongsfjordrenna</Detailed_Location>
+  </Location>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>ATLANTIC OCEAN</Location_Type>
+    <Location_Subregion1>NORTH ATLANTIC OCEAN</Location_Subregion1>
+    <Location_Subregion2>SVALBARD AND JAN MAYEN</Location_Subregion2>
+    <Detailed_Location>Krossfjorden</Detailed_Location>
+  </Location>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>ATLANTIC OCEAN</Location_Type>
+    <Location_Subregion1>NORTH ATLANTIC OCEAN</Location_Subregion1>
+    <Location_Subregion2>SVALBARD AND JAN MAYEN</Location_Subregion2>
+    <Detailed_Location>Svalbard</Detailed_Location>
+  </Location>
+  <Use_Constraints>Open data: Free to reuse if attributed to the Norwegian Polar Institute</Use_Constraints>
+  <Originating_Center>Norwegian Polar Institute (NO/NPI)</Originating_Center>
+  <Data_Center>
+    <Data_Center_Name>
+      <Short_Name>NO/NPI</Short_Name>
+      <Long_Name>Norwegian Polar Institute</Long_Name>
+    </Data_Center_Name>
+    <Data_Set_ID>26f843ab-8112-5f4e-b8db-3751a06ca434</Data_Set_ID>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <First_Name/>
+      <Last_Name/>
+      <Email/>
+    </Personnel>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <Last_Name>Norwegian Polar Data</Last_Name>
+      <Email>data[*]npolar.no</Email>
+    </Personnel>
+  </Data_Center>
+  <Summary>
+    <Abstract>Part of the NFR-funded project: MariClim (Marine Ecosystem Consequences of Climate Induced Changes in the Water Masses off West-Spitsbergen).Data from PhD-project of Fredrik Broms on: Ecological Role of polar cod, Boreogadus saida, in the marine food web of Kongsfjorden, Svalbard.</Abstract>
+  </Summary>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW PROJECT HOME PAGE</Type>
+    </URL_Content_Type>
+    <URL>http://mariclim.npolar.no/</URL>
+    <Description>Project (text/html)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET SERVICE</Type>
+    </URL_Content_Type>
+    <URL>http://risapi.data.npolar.no/oai?verb=GetRecord&amp;metadataPrefix=dif&amp;identifier=oai:ris.npolar.no:org.polarresearch-609</URL>
+    <Description>Via (application/json)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET SERVICE</Type>
+    </URL_Content_Type>
+    <URL>https://api.npolar.no/dataset/26f843ab-8112-5f4e-b8db-3751a06ca434</URL>
+    <Description>Edit URI (application/json)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/26f843ab-8112-5f4e-b8db-3751a06ca434.xml</URL>
+    <Description>DIF XML (application/xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/26f843ab-8112-5f4e-b8db-3751a06ca434.iso</URL>
+    <Description>ISO 19139 XML (application/vnd.iso.19139+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/26f843ab-8112-5f4e-b8db-3751a06ca434.atom</URL>
+    <Description>Atom entry XML (application/atom+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://data.npolar.no/dataset/26f843ab-8112-5f4e-b8db-3751a06ca434</URL>
+    <Description>HTML (text/html)</Description>
+  </Related_URL>
+  <Originating_Metadata_Node>Norwegian Polar Institute (NO/NPI)</Originating_Metadata_Node>
+  <Metadata_Name>CEOS IDN DIF</Metadata_Name>
+  <Metadata_Version>9.8.4</Metadata_Version>
+  <DIF_Creation_Date>2009-05-27</DIF_Creation_Date>
+  <Last_DIF_Revision_Date>2014-05-20</Last_DIF_Revision_Date>
+  <DIF_Revision_History>2009-05-27, created Fredrik Bjørn Broms (fredrik@npolar.no)
+2014-04-11, edited Ruben Dens (ruben@npolar.no)</DIF_Revision_History>
+  <Private>False</Private>
+  <Extended_Metadata>
+    <Metadata>
+      <Group>no.npolar.api</Group>
+      <Name>dataset.rev</Name>
+      <Value>20-691d65945ece72f5d3835650dac9eb19</Value>
+    </Metadata>
+    <Metadata>
+      <Group>gov.nasa.gsfc.gcmd</Group>
+      <Name>metadata.keyword_version</Name>
+      <Value>8.0</Value>
+    </Metadata>
+  </Extended_Metadata>
+</DIF>

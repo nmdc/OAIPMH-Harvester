@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DIF xsi:schemaLocation="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/ http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.8.4.xsd" xmlns="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Entry_ID>025b82e5-4a5a-558f-b021-17c1a60f0922</Entry_ID>
+  <Entry_Title>Marine mammals exploring the oceans pole to pole (MEOP) CTD data</Entry_Title>
+  <Data_Set_Citation>
+    <Dataset_Creator>Kit M. Kovacs, Micheal Fedak, Christian Lydersen, Ole Anders Nøst, Martin Biuw</Dataset_Creator>
+    <Dataset_Title>Marine mammals exploring the oceans pole to pole (MEOP) CTD data</Dataset_Title>
+    <Dataset_Release_Place>Tromsø, Norway</Dataset_Release_Place>
+    <Dataset_Publisher>Norwegian Polar Institute</Dataset_Publisher>
+    <Online_Resource>http://data.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922</Online_Resource>
+  </Data_Set_Citation>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Kit M.</First_Name>
+    <Last_Name>Kovacs</Last_Name>
+    <Email>kit.kovacs@npolar.no</Email>
+  </Personnel>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Micheal</First_Name>
+    <Last_Name>Fedak</Last_Name>
+    <Email>maf3@st-andrews.ac.uk</Email>
+  </Personnel>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Christian</First_Name>
+    <Last_Name>Lydersen</Last_Name>
+    <Email>Lydersen@npolar.no</Email>
+  </Personnel>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Ole Anders</First_Name>
+    <Last_Name>Nøst</Last_Name>
+    <Email/>
+  </Personnel>
+  <Personnel>
+    <Role>Investigator</Role>
+    <First_Name>Martin</First_Name>
+    <Last_Name>Biuw</Last_Name>
+    <Email>martin.biuw@npolar.no</Email>
+  </Personnel>
+  <Personnel>
+    <Role>Technical Contact</Role>
+    <First_Name>Fabien</First_Name>
+    <Last_Name>Roquet</Last_Name>
+    <Email>fabien.roquet@gmail.com</Email>
+  </Personnel>
+  <Discipline>
+    <Discipline_Name>BIOLOGY</Discipline_Name>
+  </Discipline>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>SALINITY/DENSITY</Term>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>BIOLOGICAL CLASSIFICATION</Topic>
+    <Term>ANIMALS/VERTEBRATES</Term>
+    <Variable_Level_1>MAMMALS</Variable_Level_1>
+    <Variable_Level_2>CARNIVORES</Variable_Level_2>
+    <Variable_Level_3>SEALS/SEA LIONS/WALRUSES</Variable_Level_3>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>OCEAN CIRCULATION</Term>
+    <Variable_Level_1>ADVECTION</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>OCEAN CIRCULATION</Term>
+    <Variable_Level_1>FRESH WATER FLUX</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>OCEAN CIRCULATION</Term>
+    <Variable_Level_1>WATER MASSES</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>OCEAN TEMPERATURE</Term>
+    <Variable_Level_1>WATER TEMPERATURE</Variable_Level_1>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>BIOSPHERE</Topic>
+    <Term>ECOLOGICAL DYNAMICS</Term>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>MISSING-TOPIC</Topic>
+    <Term>MISSING-TERM</Term>
+  </Parameters>
+  <Parameters>
+    <Category>EARTH SCIENCE</Category>
+    <Topic>OCEANS</Topic>
+    <Term>SALINITY/DENSITY</Term>
+  </Parameters>
+  <ISO_Topic_Category>BIOTA</ISO_Topic_Category>
+  <ISO_Topic_Category>CLIMATOLOGY/METEOROLOGY/ATMOSPHERE</ISO_Topic_Category>
+  <ISO_Topic_Category>ENVIRONMENT</ISO_Topic_Category>
+  <ISO_Topic_Category>OCEANS</ISO_Topic_Category>
+  <Keyword>MEOP</Keyword>
+  <Keyword>IPY</Keyword>
+  <Keyword>biology</Keyword>
+  <Keyword>marine</Keyword>
+  <Keyword>oceanography</Keyword>
+  <Temporal_Coverage>
+    <Start_Date>2004-01-01</Start_Date>
+    <Stop_Date>2010-12-31</Stop_Date>
+  </Temporal_Coverage>
+  <Data_Set_Progress>In Work</Data_Set_Progress>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>-74.0</Southernmost_Latitude>
+    <Northernmost_Latitude>-42.0</Northernmost_Latitude>
+    <Westernmost_Longitude>-37.0</Westernmost_Longitude>
+    <Easternmost_Longitude>52.0</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>58.0</Southernmost_Latitude>
+    <Northernmost_Latitude>88.5</Northernmost_Latitude>
+    <Westernmost_Longitude>-43.0</Westernmost_Longitude>
+    <Easternmost_Longitude>22.0</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Spatial_Coverage>
+    <Southernmost_Latitude>58.0</Southernmost_Latitude>
+    <Northernmost_Latitude>88.5</Northernmost_Latitude>
+    <Westernmost_Longitude>-43.0</Westernmost_Longitude>
+    <Easternmost_Longitude>22.0</Easternmost_Longitude>
+  </Spatial_Coverage>
+  <Location>
+    <Location_Category>OCEAN</Location_Category>
+    <Location_Type>ATLANTIC OCEAN</Location_Type>
+    <Location_Subregion1>SOUTH ATLANTIC OCEAN</Location_Subregion1>
+    <Location_Subregion2>BOUVET ISLAND</Location_Subregion2>
+    <Detailed_Location>Bouvetøya</Detailed_Location>
+  </Location>
+  <Location>
+    <Location_Category>GEOGRAPHIC REGION</Location_Category>
+    <Location_Type>POLAR</Location_Type>
+  </Location>
+  <Use_Constraints>Open data: Free to reuse if attributed to the Norwegian Polar Institute</Use_Constraints>
+  <Data_Center>
+    <Data_Center_Name>
+      <Short_Name>SU/GEOL</Short_Name>
+      <Long_Name>Stockholm University</Long_Name>
+    </Data_Center_Name>
+    <Data_Center_URL>http://www.geo.su.se/</Data_Center_URL>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <First_Name/>
+      <Last_Name/>
+      <Email/>
+    </Personnel>
+  </Data_Center>
+  <Data_Center>
+    <Data_Center_Name>
+      <Short_Name>NO/NPI</Short_Name>
+      <Long_Name>Norwegian Polar Institute</Long_Name>
+    </Data_Center_Name>
+    <Data_Center_URL>http://npolar.no</Data_Center_URL>
+    <Data_Set_ID>025b82e5-4a5a-558f-b021-17c1a60f0922</Data_Set_ID>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <First_Name/>
+      <Last_Name/>
+      <Email/>
+    </Personnel>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <Last_Name>Norwegian Polar Data</Last_Name>
+      <Email>data[*]npolar.no</Email>
+    </Personnel>
+  </Data_Center>
+  <Data_Center>
+    <Data_Center_Name>
+      <Short_Name>SMRU</Short_Name>
+      <Long_Name>University of St. Andrews, Sea Mammal Research Unit, Scotland</Long_Name>
+    </Data_Center_Name>
+    <Data_Center_URL>http://www.smru.st-andrews.ac.uk/</Data_Center_URL>
+    <Personnel>
+      <Role>Data Center Contact</Role>
+      <First_Name/>
+      <Last_Name/>
+      <Email/>
+    </Personnel>
+  </Data_Center>
+  <Distribution>
+    <Distribution_Media>Online Internet (HTTP)</Distribution_Media>
+    <Distribution_Format>application/netcdf</Distribution_Format>
+  </Distribution>
+  <Reference>
+    <Publication_Date>Unknown</Publication_Date>
+    <Title>Roquet et al. (2013): Estimates of the Southern Ocean general circulation improved by animal-borne instruments</Title>
+    <Online_Resource>http://onlinelibrary.wiley.com/enhanced/doi/10.1002/2013GL058304/</Online_Resource>
+  </Reference>
+  <Summary>
+    <Abstract>Within the Marine Mammals Exploring the Oceans Pole to Pole (MEOP) program, several international teams agreed to share their CTD-SRDL data sets to produce a single, uniformly calibrated, homogeneous database of hydrographic profiles. Here we present the MEOP-CTD database, a quality-controlled collection of most seal-derived hydrographic data obtained in the period 2004–2010.&#13;
+&#13;
+The MEOP-CTD database includes 349 CTD-SRDLs, representing 165,000 TS profiles.&#13;
+&#13;
+The majority of loggers were deployed on elephant seals, with a lesser number on Weddell and crabeater seals.&#13;
+&#13;
+On average, profiles are 500 m deep, although some seals occasionally reach 2000 m or more.&#13;
+&#13;
+The MEOP-CTD collection of profiles produces near circumpolar coverage, although some regions such as the Weddell and Ross Seas remain poorly sampled.&#13;
+&#13;
+More than 60% of TS profiles were obtained south of the southern limit of the ACC, where few Argo data exist. The migration distance of seals depends highly on the deployment location and time of the year, ranging from 100 km to more than 5000 km, while the life span of a CTD-SRDL varies from 1 to 10 months (5 months on average). The bulk of measurements were made in the austral autumn and winter, when other in situ data are scarce, yielding hydrographic sections with high spatial and temporal resolution (2.5 profiles per day on average).</Abstract>
+  </Summary>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET DATA</Type>
+      <Subtype>THREDDS DATA</Subtype>
+    </URL_Content_Type>
+    <URL>http://people.su.se/~froqu/MEOP-CTD_data.nc</URL>
+    <Description>MEOP-CTD_data.nc (application/netcdf)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://people.su.se/~froqu/the-meop-ctd-database.html</URL>
+    <Description>The MEOP-CTD database (text/html)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW PROJECT HOME PAGE</Type>
+    </URL_Content_Type>
+    <URL>http://www.meop.info/en/</URL>
+    <Description>meop.info (text/html)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET SERVICE</Type>
+    </URL_Content_Type>
+    <URL>http://risapi.data.npolar.no/oai?verb=GetRecord&amp;metadataPrefix=dif&amp;identifier=oai:ris.npolar.no:org.polarresearch-598</URL>
+    <Description>Via (application/json)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>GET SERVICE</Type>
+    </URL_Content_Type>
+    <URL>https://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922</URL>
+    <Description>Edit URI (application/json)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.xml</URL>
+    <Description>DIF XML (application/xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.iso</URL>
+    <Description>ISO 19139 XML (application/vnd.iso.19139+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://api.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922.atom</URL>
+    <Description>Atom entry XML (application/atom+xml)</Description>
+  </Related_URL>
+  <Related_URL>
+    <URL_Content_Type>
+      <Type>VIEW RELATED INFORMATION</Type>
+    </URL_Content_Type>
+    <URL>http://data.npolar.no/dataset/025b82e5-4a5a-558f-b021-17c1a60f0922</URL>
+    <Description>HTML (text/html)</Description>
+  </Related_URL>
+  <Originating_Metadata_Node>Norwegian Polar Institute (NO/NPI)</Originating_Metadata_Node>
+  <Metadata_Name>CEOS IDN DIF</Metadata_Name>
+  <Metadata_Version>9.8.4</Metadata_Version>
+  <DIF_Creation_Date>2009-04-01</DIF_Creation_Date>
+  <Last_DIF_Revision_Date>2014-12-18</Last_DIF_Revision_Date>
+  <DIF_Revision_History>2009-04-01, created Christian Lydersen (Lydersen@npolar.no)
+2013-12-17, edited Conrad Helgeland (conrad@npolar.no)
+2014-05-05, edited Conrad Helgeland (conrad@npolar.no)
+2014-05-14, Replaced project summary with dataset summary from http://onlinelibrary.wiley.com/enhanced/doi/10.1002/2013GL058304/ Conrad Helgeland (conrad@npolar.no)</DIF_Revision_History>
+  <Private>False</Private>
+  <Extended_Metadata>
+    <Metadata>
+      <Group>no.npolar.api</Group>
+      <Name>dataset.rev</Name>
+      <Value>35-bb826db14d27ff5a3ac70b9b1c7e9210</Value>
+    </Metadata>
+    <Metadata>
+      <Group>gov.nasa.gsfc.gcmd</Group>
+      <Name>metadata.keyword_version</Name>
+      <Value>8.0</Value>
+    </Metadata>
+  </Extended_Metadata>
+</DIF>

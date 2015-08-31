@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="http://www.imr.no/formats/cruiseseries/v1"
+           xmlns="http://www.imr.no/formats/cruiseseries/v1">
+
+        <xs:element name="CruiseSeries" type="CruiseSeriesType" />
+
+    <!--
+        CruiseSeries type.
+    -->
+    <xs:complexType name="CruiseSeriesType">
+        <xs:sequence>
+            <xs:element name="CruiseSerie" type="CruiseSerieType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <!--
+        CruiseSerie type.
+    -->
+    <xs:complexType name="CruiseSerieType">
+        <xs:sequence>
+            <xs:element name="CruiseSeriesDescription" type="xs:string" />
+            <xs:element name="TimeStart" type="xs:string" />
+            <xs:element name="TimeStop" type="xs:string" />
+            <xs:element name="Missions" type="MissionsType" />
+        </xs:sequence>
+        <xs:attribute name="cruiseseriename" type="xs:string" />
+    </xs:complexType>
+
+    <!--
+        CruiseSerie type.
+    -->
+    <xs:complexType name="MissionsType">
+        <xs:sequence>
+            <xs:element name="Mission" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+</xs:schema>
