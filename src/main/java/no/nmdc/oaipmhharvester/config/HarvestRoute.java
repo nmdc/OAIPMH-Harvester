@@ -18,16 +18,13 @@ public class HarvestRoute extends RouteBuilder {
     @Qualifier("harvesterConf")
     private PropertiesConfiguration harvesterConfiguration;
 
-    private static final String HARVEST_PERIOD = "harvest.period";
+    private static final String HARVEST_CRON = "harvest.cron";
 
     @Override
     public void configure() throws Exception {
-        String harvestperiod = "3600000";
-        if (harvesterConfiguration.getString(HARVEST_PERIOD) != null && !harvesterConfiguration.getString(HARVEST_PERIOD).isEmpty()) {
-            harvestperiod = harvesterConfiguration.getString(HARVEST_PERIOD);
-        }
+        String harvestcron = harvesterConfiguration.getString(HARVEST_CRON);
 
-        from("timer://harvesttimer?fixedRate=true&period=".concat(harvestperiod))
+        from(harvestcron)
                 .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
                 .to("harvestService")
                 .to("log:end?level=INFO");
