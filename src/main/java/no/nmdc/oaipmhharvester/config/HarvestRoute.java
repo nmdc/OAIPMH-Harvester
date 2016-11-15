@@ -30,7 +30,7 @@ public class HarvestRoute extends RouteBuilder {
 
         from(harvestcron)
                 .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
-                .bean(harvestService,"harvest")
+                .bean(harvestService,"harvest")                
                 .to("log:end?level=INFO");               
     }
 }

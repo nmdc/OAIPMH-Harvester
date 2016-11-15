@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -113,7 +115,7 @@ public class HarvestServiceImplTest {
     @Test
     public void testHarvest() {
         System.out.println("harvest");
-        instance.harvest();
+        instance.harvest(new HashMap());
         File file = new File(System.getProperty("java.io.tmpdir").concat(System.getProperty("file.separator")).concat("testFile.xml"));
         assertTrue(file.exists());
         file.delete();

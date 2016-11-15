@@ -3,13 +3,14 @@ package no.nmdc.oaipmhharvester.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
+import org.apache.camel.OutHeaders;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.xmlbeans.XmlException;
 import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
-import org.openarchives.oai.x20.StatusType;
 import static org.openarchives.oai.x20.StatusType.DELETED;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -41,7 +41,7 @@ public class HarvestServiceImpl implements HarvestService {
 
     @Transactional
     @Override
-    public synchronized void harvest() {
+    public synchronized void harvest(@OutHeaders Map<String, Object> out) {
         List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
         List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList("metadata.format");
         datasetDao.deleteAll();
@@ -59,7 +59,7 @@ public class HarvestServiceImpl implements HarvestService {
                     for (String metadataFormat : metadataFormats) {
                         if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
                             try {
-                                parseAndWriteMetadata(url, mft, set);
+                                parseAndWriteMetadata(url, mft, set, out);
                             } catch (XmlException | IOException | OAIPMHException ex) {
                                 LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while harvesting from: "
                                         + server + "\nUsing format: " + mft.getMetadataPrefix(), ex);
@@ -70,12 +70,10 @@ public class HarvestServiceImpl implements HarvestService {
                     }
                 }
             }
-            LOGGER.info("Finished server {}. ", server);
         }
-        LOGGER.info("Finished all servers.");
     }
 
-    private void parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set) throws XmlException, IOException, OAIPMHException {
+    private void parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out) throws XmlException, IOException, OAIPMHException {
         List<RecordType> records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, oaipmhService.getCurrentResumptionToken(), set);
         if (records != null) {
             for (RecordType record : records) {
@@ -98,16 +96,16 @@ public class HarvestServiceImpl implements HarvestService {
                         }
                     } catch (DuplicateKeyException dke) {
                         datasetDao.insert(baseUrl, identifier, "Duplicate identifier.", set, mft.getMetadataNamespace());
-                        LOGGER.warn("Warning for server {} : {}", baseUrl, identifier);
+                        LOGGER.info("Duplikat identifikator {} : {}", baseUrl, identifier);
                     } catch (Exception dke) {
                         datasetDao.insert(baseUrl, identifier, set, set, mft.getMetadataNamespace());
-                        LOGGER.warn("Warning for server {} : {}", baseUrl, identifier);
-                        LOGGER.warn("Warning exception", dke);
+                        LOGGER.info("Warning for server {} : {}", baseUrl, identifier);
+                        LOGGER.info("Warning exception", dke);
                     }
 
                 }
                 if (oaipmhService.getCurrentResumptionToken() != null) {
-                    parseAndWriteMetadata(baseUrl, mft, set);
+                    parseAndWriteMetadata(baseUrl, mft, set, out);
                 }
             }
         }
