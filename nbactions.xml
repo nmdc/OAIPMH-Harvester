@@ -7,5 +7,8 @@
                 <goal>clean</goal>
                 <goal>tomcat7:run</goal>
             </goals>
+            <properties>
+                <jpda.listen>maven</jpda.listen>
+            </properties>
         </action>
     </actions>

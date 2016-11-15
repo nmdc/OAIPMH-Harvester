@@ -1,10 +1,13 @@
 package no.nmdc.oaipmhharvester.config;
 
+import no.nmdc.oaipmhharvester.service.HarvestService;
+import no.nmdc.oaipmhharvester.service.HarvestServiceImpl;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * This imports and prepares the configuration files.
@@ -38,5 +41,11 @@ public class ApplicationConfig {
         PropertiesConfiguration conf = new PropertiesConfiguration(System.getProperty("catalina.base") + "/conf/oaipmh-harvester.properties");
         conf.setReloadingStrategy(new FileChangedReloadingStrategy());
         return conf;
+    }
+    
+    @Bean
+    public HarvestService harvestService() throws ConfigurationException {
+        HarvestService harvestService = new HarvestServiceImpl();
+        return harvestService;
     }
 }

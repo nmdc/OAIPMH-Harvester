@@ -3,15 +3,22 @@ package no.nmdc.oaipmhharvester.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.xmlbeans.XmlException;
 import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
+import org.openarchives.oai.x20.StatusType;
+import static org.openarchives.oai.x20.StatusType.DELETED;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -20,6 +27,8 @@ import org.springframework.stereotype.Service;
 @Service(value = "harvestService")
 public class HarvestServiceImpl implements HarvestService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HarvestServiceImpl.class);
+
     @Autowired
     @Qualifier("harvesterConf")
     private PropertiesConfiguration harvesterConfiguration;
@@ -27,11 +36,15 @@ public class HarvestServiceImpl implements HarvestService {
     @Autowired
     private OAIPMHService oaipmhService;
 
+    @Autowired
+    private DatasetDao datasetDao;
+
+    @Transactional
     @Override
-    public void harvest() {
+    public synchronized void harvest() {
         List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
         List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList("metadata.format");
-
+        datasetDao.deleteAll();
         for (String server : servers) {
             List<MetadataFormatType> metadataFormatTypes = null;
             String url = harvesterConfiguration.getString(server.concat(".baseurl"));
@@ -57,26 +70,47 @@ public class HarvestServiceImpl implements HarvestService {
                     }
                 }
             }
+            LOGGER.info("Finished server {}. ", server);
         }
+        LOGGER.info("Finished all servers.");
     }
 
     private void parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set) throws XmlException, IOException, OAIPMHException {
         List<RecordType> records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, oaipmhService.getCurrentResumptionToken(), set);
         if (records != null) {
             for (RecordType record : records) {
-                String identifier = record.getHeader().getIdentifier();
-                identifier = identifier.replace(":", "_");
-                identifier = identifier.replace("/", "-");
-                File file = new File(harvesterConfiguration.getString("save.path").concat(identifier).concat(".xml"));
-                if (record.getMetadata() != null) {
-                    record.getMetadata().save(file);
-                } else {
-                    LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
+                if (record.getHeader().getStatus() != DELETED) {
+                    String identifier = record.getHeader().getIdentifier();
+                    identifier = identifier.replace(":", "_");
+                    identifier = identifier.replace("/", "-");
+                    File file = new File(harvesterConfiguration.getString("save.path").concat(identifier).concat(".xml"));
+                    /**
+                     * Insert record.
+                     */
+                    try {
+                        if (datasetDao.notExists(record.getHeader().getIdentifier())) {
+                            datasetDao.insert(file.getAbsolutePath(), baseUrl, record, set, mft.getMetadataNamespace(), record.getHeader().getIdentifier());
+                            if (record.getMetadata() != null) {
+                                record.getMetadata().save(file);
+                            } else {
+                                LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
+                            }
+                        }
+                    } catch (DuplicateKeyException dke) {
+                        datasetDao.insert(baseUrl, identifier, "Duplicate identifier.", set, mft.getMetadataNamespace());
+                        LOGGER.warn("Warning for server {} : {}", baseUrl, identifier);
+                    } catch (Exception dke) {
+                        datasetDao.insert(baseUrl, identifier, set, set, mft.getMetadataNamespace());
+                        LOGGER.warn("Warning for server {} : {}", baseUrl, identifier);
+                        LOGGER.warn("Warning exception", dke);
+                    }
+
                 }
-            }
-            if (oaipmhService.getCurrentResumptionToken() != null) {
-                parseAndWriteMetadata(baseUrl, mft, set);
+                if (oaipmhService.getCurrentResumptionToken() != null) {
+                    parseAndWriteMetadata(baseUrl, mft, set);
+                }
             }
         }
     }
+
 }

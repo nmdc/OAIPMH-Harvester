@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.xmlbeans.XmlException;
@@ -21,6 +22,7 @@ import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -75,6 +77,13 @@ public class HarvestServiceImplTest {
             when(service.getCurrentResumptionToken()).thenReturn(null);
 
             return service;
+        }
+        
+        @Bean
+        public DatasetDao datasetDao() {
+            DatasetDao datasetDao = mock(DatasetDao.class);
+            doReturn(true).when(datasetDao).notExists(anyString());
+            return datasetDao;
         }
 
         @Bean
