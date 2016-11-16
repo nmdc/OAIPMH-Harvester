@@ -39,13 +39,13 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- Rolling validation error appender -->
+    <!-- Rolling harvesting log -->
     <appender name="VALIDATIONERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
 
-        <file>${catalina.base}/logs/nmdcmodules/harvesting_logging.log</file>
+        <file>${catalina.base}/logs/harvesting/harvesting_logging.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover -->
             <fileNamePattern>${catalina.base}/logs/harvesting/harvesting_logging.%d{yyyy-MM-dd}.log</fileNamePattern>
