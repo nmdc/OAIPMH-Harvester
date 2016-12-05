@@ -10,25 +10,18 @@ import org.openarchives.oai.x20.RecordType;
 public interface DatasetDao {
     /**
      * 
-     * @param filename
-     * @param baseUrl
-     * @param record
-     * @param set 
-     * @param format 
-     * @param identifer 
-     */
-    void insert(String filename, String baseUrl, RecordType record, String set, String format, String identifer);
-    /**
-     * 
      * @param providerurl
      * @param identifier
-     * @param reason
      * @param set
-     * @param format 
+     * @param format
+     * @param filenameHarvested
+     * @param filenameDif
+     * @param filenameNmdc
+     * @param filenameHtml 
      */
-     void insert(String providerurl, String identifier, String reason, String set, String format);
+    void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml);
     /**
-     * This deletes everything.
+     * 
      */
     void deleteAll();    
 

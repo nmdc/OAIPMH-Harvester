@@ -21,7 +21,7 @@ public class GetUniqueMetadataRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("file:" + harvesterConfiguration.getString("save.path") + "?noop=true&idempotentKey=${file:name}-${file:modified}")
+        from("file:" + harvesterConfiguration.getString("dir.prefix.harvested") + "?noop=true&idempotentKey=${file:name}-${file:modified}")
                 .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
                 .to("log:end?level=INFO")
                 .to("jms:queue:nmdc/harvest-validate");

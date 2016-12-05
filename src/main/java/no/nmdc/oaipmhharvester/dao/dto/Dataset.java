@@ -10,7 +10,6 @@ import java.util.Calendar;
 public class Dataset {
     private String id;
     
-    private String filename;
     
     private String providerurl;
     
@@ -29,7 +28,15 @@ public class Dataset {
     private String set;
     
     private Boolean valid;
+    
+    private String filenameHarvested;
+    
+    private String filenameDif;
+    
+    private String filenameNmdc;
 
+    private String filenamehtml;    
+    
     public String getId() {
         return id;
     }
@@ -38,12 +45,36 @@ public class Dataset {
         this.id = id;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFilenameHarvested() {
+        return filenameHarvested;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setFilenameHarvested(String filenameHarvested) {
+        this.filenameHarvested = filenameHarvested;
+    }
+
+    public String getFilenameDif() {
+        return filenameDif;
+    }
+
+    public void setFilenameDif(String filenameDif) {
+        this.filenameDif = filenameDif;
+    }
+
+    public String getFilenameNmdc() {
+        return filenameNmdc;
+    }
+
+    public void setFilenameNmdc(String filenameNmdc) {
+        this.filenameNmdc = filenameNmdc;
+    }
+
+    public String getFilenamehtml() {
+        return filenamehtml;
+    }
+
+    public void setFilenamehtml(String filenamehtml) {
+        this.filenamehtml = filenamehtml;
     }
 
     public String getProviderurl() {

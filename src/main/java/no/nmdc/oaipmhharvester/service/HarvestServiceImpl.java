@@ -2,12 +2,26 @@ package no.nmdc.oaipmhharvester.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
 import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.camel.OutHeaders;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.xmlbeans.XmlException;
 import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
@@ -19,6 +33,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 
 /**
  *
@@ -42,9 +57,9 @@ public class HarvestServiceImpl implements HarvestService {
     @Transactional
     @Override
     public synchronized void harvest(@OutHeaders Map<String, Object> out) {
+        List<String> listHash = new ArrayList();
         List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
         List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList("metadata.format");
-        datasetDao.deleteAll();
         for (String server : servers) {
             List<MetadataFormatType> metadataFormatTypes = null;
             String url = harvesterConfiguration.getString(server.concat(".baseurl"));
@@ -59,7 +74,7 @@ public class HarvestServiceImpl implements HarvestService {
                     for (String metadataFormat : metadataFormats) {
                         if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
                             try {
-                                parseAndWriteMetadata(url, mft, set, out);
+                                listHash.addAll(parseAndWriteMetadata(url, mft, set, out));
                             } catch (XmlException | IOException | OAIPMHException ex) {
                                 LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while harvesting from: "
                                         + server + "\nUsing format: " + mft.getMetadataPrefix(), ex);
@@ -71,43 +86,94 @@ public class HarvestServiceImpl implements HarvestService {
                 }
             }
         }
+        check(listHash);
     }
 
-    private void parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out) throws XmlException, IOException, OAIPMHException {
+    private List<String> parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out) throws XmlException, IOException, OAIPMHException {
+        List<String> listHash = new ArrayList();
         List<RecordType> records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, oaipmhService.getCurrentResumptionToken(), set);
         if (records != null) {
             for (RecordType record : records) {
                 if (record.getHeader().getStatus() != DELETED) {
                     String identifier = record.getHeader().getIdentifier();
-                    identifier = identifier.replace(":", "_");
-                    identifier = identifier.replace("/", "-");
-                    File file = new File(harvesterConfiguration.getString("save.path").concat(identifier).concat(".xml"));
+                    String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                     /**
                      * Insert record.
                      */
                     try {
+                        String filenameHarvested = harvesterConfiguration.getString("dir.prefix.harvested") + hash + ".xml";
+                        listHash.add(filenameHarvested);
+                        String filenameDif = harvesterConfiguration.getString("dir.prefix.dif") + hash + ".xml";
+                        listHash.add(filenameDif);
+                        String filenameNmdc = harvesterConfiguration.getString("dir.prefix.nmdc") + hash + ".xml";
+                        listHash.add(filenameNmdc);
+                        String filenameHtml = harvesterConfiguration.getString("dir.prefix.html") + hash + ".html";
+                        listHash.add(filenameHtml);
+                        if (record.getMetadata() != null) {
+                            record.getMetadata().save(new File(filenameHarvested));
+                        } else {
+                            LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
+                        }
                         if (datasetDao.notExists(record.getHeader().getIdentifier())) {
-                            datasetDao.insert(file.getAbsolutePath(), baseUrl, record, set, mft.getMetadataNamespace(), record.getHeader().getIdentifier());
-                            if (record.getMetadata() != null) {
-                                record.getMetadata().save(file);
-                            } else {
-                                LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
-                            }
+                            datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml);
+
                         }
                     } catch (DuplicateKeyException dke) {
-                        datasetDao.insert(baseUrl, identifier, "Duplicate identifier.", set, mft.getMetadataNamespace());
-                        LOGGER.info("Duplikat identifikator {} : {}", baseUrl, identifier);
+                        LOGGER.error("Duplikat identifikator {} : {}", baseUrl, identifier);
                     } catch (Exception dke) {
-                        datasetDao.insert(baseUrl, identifier, set, set, mft.getMetadataNamespace());
-                        LOGGER.info("Warning for server {} : {}", baseUrl, identifier);
-                        LOGGER.info("Warning exception", dke);
+                        LOGGER.error("Warning for server {} : {}", baseUrl, identifier);
+                        LOGGER.error("Warning exception", dke);
                     }
-
                 }
                 if (oaipmhService.getCurrentResumptionToken() != null) {
                     parseAndWriteMetadata(baseUrl, mft, set, out);
                 }
             }
+        }
+        return listHash;
+    }
+
+    /**
+     * Checks files to be removed.
+     *
+     * @param listHash
+     */
+    private void check(List<String> listHash) {
+        try {
+            final Set<String> listSet = new HashSet(listHash);
+            String rootDir = harvesterConfiguration.getString("dir.prefix.root");
+
+            Files.walkFileTree(Paths.get(rootDir), new FileVisitor<Path>() {
+
+                @Override
+                public FileVisitResult preVisitDirectory(Path path,
+                        BasicFileAttributes atts) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes mainAtts)
+                        throws IOException {
+                    if (!listSet.contains(path.toString())) {
+                        path.toFile().delete();
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path path,
+                        IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path path, IOException exc)
+                        throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException ex) {
+            LOGGER.error("Error parsing dir for deletion.", ex);
         }
     }
 
