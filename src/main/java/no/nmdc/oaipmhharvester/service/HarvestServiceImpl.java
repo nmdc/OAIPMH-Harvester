@@ -115,9 +115,8 @@ public class HarvestServiceImpl implements HarvestService {
                             LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
                         }
                         if (datasetDao.notExists(record.getHeader().getIdentifier())) {
-                            datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml);
-
-                        }
+                            datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash);
+                        }  
                     } catch (DuplicateKeyException dke) {
                         LOGGER.error("Duplikat identifikator {} : {}", baseUrl, identifier);
                     } catch (Exception dke) {

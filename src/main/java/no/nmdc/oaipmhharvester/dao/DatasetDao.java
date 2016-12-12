@@ -19,7 +19,7 @@ public interface DatasetDao {
      * @param filenameNmdc
      * @param filenameHtml 
      */
-    void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml);
+    void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml, String hash);
     /**
      * 
      */

@@ -20,15 +20,15 @@ public class JdbcDatasetDao extends JdbcDaoSupport implements DatasetDao {
     }
 
     @Override
-    public void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml) {
+    public void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml, String hash) {
         String id = java.util.UUID.randomUUID().toString();
         Calendar updatedTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         getJdbcTemplate().update("INSERT INTO nmdc_v1.dataset(\n"
                 + "            id, providerurl, schema, updated_by, inserted_by, \n"
                 + "            updated_time, inserted_time, set, identifier, filename_harvested, filename_dif, filename_nmdc, \n"
-                + "            filename_html)\n"
+                + "            filename_html, hash)\n"
                 + "    VALUES (?, ?, ?, ?, ?, \n"
-                + "            ?, ?, ?, ?, ?, ?, ?, ?);", id, providerurl, format, "nmdc", "nmdc", updatedTime, updatedTime, set, identifier, filenameHarvested, filenameDif, filenameNmdc, filenameHtml);
+                + "            ?, ?, ?, ?, ?, ?, ?, ?, ?);", id, providerurl, format, "nmdc", "nmdc", updatedTime, updatedTime, set, identifier, filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash);
     }
 
     @Override
