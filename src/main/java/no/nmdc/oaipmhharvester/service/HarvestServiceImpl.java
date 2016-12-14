@@ -20,8 +20,10 @@ import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.camel.OutHeaders;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.xmlbeans.XmlException;
 import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
@@ -96,6 +98,9 @@ public class HarvestServiceImpl implements HarvestService {
             for (RecordType record : records) {
                 if (record.getHeader().getStatus() != DELETED) {
                     String identifier = record.getHeader().getIdentifier();
+                    if (identifier.contains("/")) {
+                        identifier = StringUtils.substringAfterLast(identifier, "/");
+                    }
                     String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                     /**
                      * Insert record.
@@ -107,10 +112,11 @@ public class HarvestServiceImpl implements HarvestService {
                         listHash.add(filenameDif);
                         String filenameNmdc = harvesterConfiguration.getString("dir.prefix.nmdc") + hash + ".xml";
                         listHash.add(filenameNmdc);
-                        String filenameHtml = harvesterConfiguration.getString("dir.prefix.html") + hash + ".html";
+                        String filenameHtml = harvesterConfiguration.getString("dir.prefix.html") + hash + ".xml";
                         listHash.add(filenameHtml);
                         if (record.getMetadata() != null) {
-                            record.getMetadata().save(new File(filenameHarvested));
+                            File file = new File(filenameHarvested);
+                            FileUtils.writeStringToFile(file, record.getMetadata().xmlText(), "UTF-8");                            
                         } else {
                             LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
                         }
