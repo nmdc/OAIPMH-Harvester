@@ -82,7 +82,6 @@ public class OAIPMHServiceImpl implements OAIPMHService {
         List<RecordType> records = null;
         if (listrec != null) {
             records = Arrays.asList(listrec.getRecordArray());
-
             if (listrec.getResumptionToken() != null && listrec.getResumptionToken().getStringValue() != null && !listrec.getResumptionToken().getStringValue().isEmpty()) {
                 currentResumptionToken = listrec.getResumptionToken().getStringValue();
             } else {

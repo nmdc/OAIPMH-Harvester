@@ -98,9 +98,6 @@ public class HarvestServiceImpl implements HarvestService {
             for (RecordType record : records) {
                 if (record.getHeader().getStatus() != DELETED) {
                     String identifier = record.getHeader().getIdentifier();
-                    if (identifier.contains("/")) {
-                        identifier = StringUtils.substringAfterLast(identifier, "/");
-                    }
                     String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                     /**
                      * Insert record.
