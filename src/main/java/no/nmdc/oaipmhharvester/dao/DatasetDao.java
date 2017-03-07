@@ -1,7 +1,8 @@
 
 package no.nmdc.oaipmhharvester.dao;
 
-import org.openarchives.oai.x20.RecordType;
+import no.nmdc.oaipmhharvester.dao.dto.Dataset;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -32,4 +33,5 @@ public interface DatasetDao {
      */
     boolean notExists(String identifer);
 
+    Dataset findByFilenameHarvested(String filenameHarvested);
 }

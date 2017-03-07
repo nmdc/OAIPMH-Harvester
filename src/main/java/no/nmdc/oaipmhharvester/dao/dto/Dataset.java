@@ -37,6 +37,8 @@ public class Dataset {
 
     private String filenamehtml;    
     
+    private String identifier; 
+    
     public String getId() {
         return id;
     }
@@ -147,6 +149,14 @@ public class Dataset {
 
     public void setValid(Boolean valid) {
         this.valid = valid;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
     
     
