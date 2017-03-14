@@ -32,12 +32,7 @@ public class JdbcDatasetDao extends JdbcDaoSupport implements DatasetDao {
                 + "    VALUES (?, ?, ?, ?, ?, \n"
                 + "            ?, ?, ?, ?, ?, ?, ?, ?, ?);", id, providerurl, format, "nmdc", "nmdc", updatedTime, updatedTime, set, identifier, filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash);
     }
-
-    @Override
-    public void deleteAll() {
-        getJdbcTemplate().update("delete from nmdc_v1.dataset");
-    }
-
+    
     @Override
     public boolean notExists(String identifer) {
         return getJdbcTemplate().queryForObject("select COUNT(*) <= 0 FROM nmdc_v1.dataset WHERE identifier = ?", Boolean.class, identifer);

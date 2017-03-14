@@ -2,28 +2,14 @@ package no.nmdc.oaipmhharvester.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
 import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.camel.OutHeaders;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
-import org.apache.commons.lang.StringUtils;
 import org.apache.xmlbeans.XmlException;
 import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
@@ -88,7 +74,6 @@ public class HarvestServiceImpl implements HarvestService {
                 }
             }
         }
-        check(listHash);
     }
 
     private List<String> parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out) throws XmlException, IOException, OAIPMHException {
@@ -120,6 +105,8 @@ public class HarvestServiceImpl implements HarvestService {
                         if (datasetDao.notExists(record.getHeader().getIdentifier())) {
                             datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash);
                         }  
+                        out.put("identifer", identifier);
+                        out.put("hash", hash);
                     } catch (DuplicateKeyException dke) {
                         LOGGER.error("Duplikat identifikator {} : {}", baseUrl, identifier);
                     } catch (Exception dke) {
@@ -133,50 +120,6 @@ public class HarvestServiceImpl implements HarvestService {
             }
         }
         return listHash;
-    }
-
-    /**
-     * Checks files to be removed.
-     *
-     * @param listHash
-     */
-    private void check(List<String> listHash) {
-        try {
-            final Set<String> listSet = new HashSet(listHash);
-            String rootDir = harvesterConfiguration.getString("dir.prefix.root");
-
-            Files.walkFileTree(Paths.get(rootDir), new FileVisitor<Path>() {
-
-                @Override
-                public FileVisitResult preVisitDirectory(Path path,
-                        BasicFileAttributes atts) throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes mainAtts)
-                        throws IOException {
-                    if (!listSet.contains(path.toString())) {
-                        path.toFile().delete();
-                    }
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult postVisitDirectory(Path path,
-                        IOException exc) throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFileFailed(Path path, IOException exc)
-                        throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } catch (IOException ex) {
-            LOGGER.error("Error parsing dir for deletion.", ex);
-        }
-    }
+    }    
 
 }

@@ -21,10 +21,7 @@ public interface DatasetDao {
      * @param filenameHtml 
      */
     void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml, String hash);
-    /**
-     * 
-     */
-    void deleteAll();    
+  
 
     /**
      * 
