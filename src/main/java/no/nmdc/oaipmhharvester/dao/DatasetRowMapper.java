@@ -26,6 +26,7 @@ class DatasetRowMapper implements RowMapper<Dataset> {
         dataset.setFilenameDif(rs.getString("filename_dif"));
         dataset.setFilenameNmdc(rs.getString("filename_nmdc"));
         dataset.setFilenamehtml(rs.getString("filename_html"));
+        dataset.setOriginatingCenter(rs.getString("originating_center"));
         return dataset;
     }    
 }

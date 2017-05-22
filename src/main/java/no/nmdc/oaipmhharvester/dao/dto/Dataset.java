@@ -39,6 +39,8 @@ public class Dataset {
     
     private String identifier; 
     
+    private String originatingCenter;
+    
     public String getId() {
         return id;
     }
@@ -158,6 +160,16 @@ public class Dataset {
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
+
+    public String getOriginatingCenter() {
+        return originatingCenter;
+    }
+
+    public void setOriginatingCenter(String originatingCenter) {
+        this.originatingCenter = originatingCenter;
+    }
+    
+    
     
     
 }

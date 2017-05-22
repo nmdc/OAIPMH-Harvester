@@ -5,11 +5,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.camel.OutHeaders;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.xmlbeans.XmlException;
 import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
@@ -22,6 +29,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -98,13 +109,17 @@ public class HarvestServiceImpl implements HarvestService {
                         listHash.add(filenameHtml);
                         if (record.getMetadata() != null) {
                             File file = new File(filenameHarvested);
-                            FileUtils.writeStringToFile(file, record.getMetadata().xmlText(), "UTF-8");                            
+                            FileUtils.writeStringToFile(file, record.getMetadata().xmlText(), "UTF-8");
                         } else {
                             LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
                         }
                         if (datasetDao.notExists(record.getHeader().getIdentifier())) {
-                            datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash);
-                        }  
+                            String originatingCenter = getOriginatingCenter(record.getMetadata().xmlText());
+                            datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter);
+                        } else {
+                            String originatingCenter = getOriginatingCenter(record.getMetadata().xmlText());
+                            datasetDao.update(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter);                            
+                        }
                         out.put("identifer", identifier);
                         out.put("hash", hash);
                     } catch (DuplicateKeyException dke) {
@@ -120,6 +135,54 @@ public class HarvestServiceImpl implements HarvestService {
             }
         }
         return listHash;
-    }    
+    }
+
+    private String getOriginatingCenter(String xmlText) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException {
+        if (isDif(xmlText)) {
+            return getDifOriginatingCenter(xmlText);
+        } else if (isIso19139(xmlText)) {
+            return getIsoOriginatingCenter(xmlText);
+        } else {
+            return "";
+        }
+    }
+
+    private boolean isDif(String xmlText) throws SAXException, IOException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(IOUtils.toInputStream(xmlText, "UTF-8"));
+        Element root = doc.getDocumentElement();
+        String namespace = root.getNamespaceURI();
+        return namespace.equalsIgnoreCase("http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/");
+    }
+
+    private boolean isIso19139(String xmlText) throws SAXException, IOException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(IOUtils.toInputStream(xmlText, "UTF-8"));
+        Element root = doc.getDocumentElement();
+        String namespace = root.getNamespaceURI();
+        return namespace.equalsIgnoreCase("http://www.isotc211.org/2005/gmd");
+    }
+
+    private String getIsoOriginatingCenter(String xmlText) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(false);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(IOUtils.toInputStream(xmlText, "UTF-8"));
+        XPathExpression xp = XPathFactory.newInstance().newXPath().compile("//pointOfContact/CI_ResponsibleParty/organisationName/CharacterString");
+        return xp.evaluate(doc);
+    }
+
+    private String getDifOriginatingCenter(String xmlText) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(false);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(IOUtils.toInputStream(xmlText, "UTF-8"));
+        XPathExpression xp = XPathFactory.newInstance().newXPath().compile("//Originating_Center");
+        return xp.evaluate(doc);
+    }
 
 }
