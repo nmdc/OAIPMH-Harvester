@@ -21,7 +21,12 @@ public class CamelConfigHarvest extends CamelConfiguration implements Initializi
 
     @Autowired
     private HarvestRoute harvestRoute;
-
+    
+    @Autowired
+    private RestRoute restRoute;    
+    
+    @Autowired
+    private RestHarvestRoute restHarvestRoute;      
     /**
      * Adds all routes to the camel config
      *
@@ -29,7 +34,7 @@ public class CamelConfigHarvest extends CamelConfiguration implements Initializi
      */
     @Override
     public List<RouteBuilder> routes() {
-        return Arrays.asList(getUniqueMetadataRoute, harvestRoute);
+        return Arrays.asList(getUniqueMetadataRoute, harvestRoute, restRoute, restHarvestRoute);
     }
 
     @Override

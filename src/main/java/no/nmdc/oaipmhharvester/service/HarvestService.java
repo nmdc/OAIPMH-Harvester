@@ -1,6 +1,7 @@
 package no.nmdc.oaipmhharvester.service;
 
 import java.util.Map;
+import org.apache.camel.Exchange;
 import org.apache.camel.OutHeaders;
 
 /**
@@ -14,6 +15,7 @@ public interface HarvestService {
     /**
      * Performs harvesting of OAI-PMH servers
      *
+     * @param out
      */
-    void harvest(@OutHeaders Map<String, Object> out);
+    void harvest(Exchange exchange);
 }
