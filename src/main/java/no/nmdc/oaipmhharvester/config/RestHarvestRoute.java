@@ -1,7 +1,9 @@
 package no.nmdc.oaipmhharvester.config;
 
+import com.sun.javafx.binding.Logging;
 import no.nmdc.oaipmhharvester.service.HarvestService;
 import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ public class RestHarvestRoute extends RouteBuilder {
     
     @Override
     public void configure() throws Exception {
+        
+        onException(Exception.class).log(LoggingLevel.ERROR, "Error during harvest rest route.");
         
         from("jms:queue:nmdc/start-harvest")
             .to("log:start_harvest?level=INFO")

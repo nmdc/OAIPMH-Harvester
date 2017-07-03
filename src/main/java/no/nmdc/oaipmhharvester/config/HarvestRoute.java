@@ -1,6 +1,7 @@
 package no.nmdc.oaipmhharvester.config;
 
 import no.nmdc.oaipmhharvester.service.HarvestService;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class HarvestRoute extends RouteBuilder {
     public void configure() throws Exception {
         String harvestcron = harvesterConfiguration.getString(HARVEST_CRON);
 
+        onException(Exception.class).log(LoggingLevel.ERROR, "Error during harvest route.");        
+        
         from(harvestcron)
                 .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
                 .bean(harvestService,"harvest")                
