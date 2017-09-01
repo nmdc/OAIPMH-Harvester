@@ -1,6 +1,7 @@
 package no.nmdc.oaipmhharvester.dao;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import javax.sql.DataSource;
 import no.nmdc.oaipmhharvester.dao.dto.Dataset;
@@ -59,6 +60,17 @@ public class JdbcDatasetDao extends JdbcDaoSupport implements DatasetDao {
     @Override
     public Dataset findByIdentifier(String identifier) {
         return getJdbcTemplate().queryForObject("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center FROM nmdc_v1.dataset where identifier=?", new DatasetRowMapper(), identifier);
+    }
+
+    @Override
+    public void deleteByIdentifier(String identifier) {
+        getJdbcTemplate().update("delete from nmdc_v1.dataset\n"
+                + " WHERE identifier=?;", identifier);
+    }
+
+    @Override
+    public List<Dataset> getUpdatedOlderThan(Calendar startTime) {
+        return getJdbcTemplate().query("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center FROM nmdc_v1.dataset where updated_time < ?", new Object[] {startTime}, new DatasetRowMapper());
     }
 
 }

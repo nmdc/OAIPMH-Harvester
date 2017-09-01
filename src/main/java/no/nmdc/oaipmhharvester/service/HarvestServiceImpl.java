@@ -3,8 +3,11 @@ package no.nmdc.oaipmhharvester.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,9 +15,9 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import no.nmdc.oaipmhharvester.dao.DatasetDao;
+import no.nmdc.oaipmhharvester.dao.dto.Dataset;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.camel.Exchange;
-import org.apache.camel.OutHeaders;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -32,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -58,6 +60,7 @@ public class HarvestServiceImpl implements HarvestService {
     @Override
     public void harvest(Exchange exchange) {
         synchronized (HarvestServiceImpl.class) {
+            Calendar startTime = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
             LOGGER.info("Start harvesting.");
             Map<String, Object> out = exchange.getOut().getHeaders();
             List<String> listHash = new ArrayList();
@@ -94,7 +97,16 @@ public class HarvestServiceImpl implements HarvestService {
                     }
                 }
             }
+            List<Dataset> datasets = datasetDao.getUpdatedOlderThan(startTime);
+            for (Dataset dataset : datasets) {
+                FileUtils.deleteQuietly(new File(dataset.getFilenameDif()));
+                FileUtils.deleteQuietly(new File(dataset.getFilenamehtml()));
+                FileUtils.deleteQuietly(new File(dataset.getFilenameNmdc()));
+                FileUtils.deleteQuietly(new File(dataset.getFilenameHarvested()));
+                datasetDao.deleteByIdentifier(dataset.getIdentifier());
+            }
         }
+
     }
 
     private List<String> parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out) throws XmlException, IOException, OAIPMHException {
@@ -104,9 +116,9 @@ public class HarvestServiceImpl implements HarvestService {
         LOGGER.info("Records retrieved");
         if (records != null) {
             for (RecordType record : records) {
+                String identifier = record.getHeader().getIdentifier();
+                String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                 if (record.getHeader().getStatus() != DELETED) {
-                    String identifier = record.getHeader().getIdentifier();
-                    String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                     /**
                      * Insert record.
                      */

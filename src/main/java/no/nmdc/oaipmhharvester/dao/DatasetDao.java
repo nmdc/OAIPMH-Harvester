@@ -1,6 +1,8 @@
 
 package no.nmdc.oaipmhharvester.dao;
 
+import java.util.Calendar;
+import java.util.List;
 import no.nmdc.oaipmhharvester.dao.dto.Dataset;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +49,9 @@ public interface DatasetDao {
     Dataset findByFilenameHarvested(String filenameHarvested);
     
     Dataset findByIdentifier(String identifier);
+
+    void deleteByIdentifier(String identifier);
+
+    List<Dataset> getUpdatedOlderThan(Calendar startTime);
 
 }
