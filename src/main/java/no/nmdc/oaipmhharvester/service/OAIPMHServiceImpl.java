@@ -139,7 +139,6 @@ public class OAIPMHServiceImpl implements OAIPMHService {
         if (identifier == null || metadataPrefix == null) {
             throw new OAIPMHException("identifier and metadataPrefix are mandatory");
         }
-
         String privateUrl = url.concat(("?verb=GetRecord&identifier=")).concat(identifier).concat("&metadataPrefix=").concat(metadataPrefix);
         URL performUrl = new URL(privateUrl);
         OAIPMHDocument document = OAIPMHDocument.Factory.parse(performUrl);

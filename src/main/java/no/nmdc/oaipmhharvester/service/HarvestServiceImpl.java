@@ -15,6 +15,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import no.nmdc.oaipmhharvester.dao.DatasetDao;
+import no.nmdc.oaipmhharvester.dao.SolrDao;
 import no.nmdc.oaipmhharvester.dao.dto.Dataset;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
 import org.apache.camel.Exchange;
@@ -56,6 +57,9 @@ public class HarvestServiceImpl implements HarvestService {
     @Autowired
     private DatasetDao datasetDao;
 
+    @Autowired
+    private SolrDao solrDao;
+    
     @Transactional
     @Override
     public void harvest(Exchange exchange) {
@@ -104,9 +108,9 @@ public class HarvestServiceImpl implements HarvestService {
                 FileUtils.deleteQuietly(new File(dataset.getFilenameNmdc()));
                 FileUtils.deleteQuietly(new File(dataset.getFilenameHarvested()));
                 datasetDao.deleteByIdentifier(dataset.getIdentifier());
+                solrDao.delete(dataset.getIdentifier());
             }
         }
-
     }
 
     private List<String> parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out) throws XmlException, IOException, OAIPMHException {
