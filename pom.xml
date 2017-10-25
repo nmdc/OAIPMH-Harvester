@@ -99,6 +99,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jaxb</artifactId>
+            <version>${camel.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring-javaconfig</artifactId>
             <version>${camel.version}</version>
         </dependency>
@@ -112,6 +117,17 @@
             <artifactId>activemq-pool</artifactId>
             <version>${activemq.version}</version>
         </dependency>
+        <dependency>
+            <groupId>no.imr.nmd.commons.common.jaxb</groupId>
+            <artifactId>commons-common-jaxb</artifactId>
+            <version>2.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>org.eclipse.persistence.moxy</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>        
         <dependency>
             <groupId>org.apache.xbean</groupId>
             <artifactId>xbean-spring</artifactId>
@@ -276,6 +292,9 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
+                <configuration>
+                    <port>8084</port>
+                </configuration>
             </plugin>
         </plugins>
     </build>
