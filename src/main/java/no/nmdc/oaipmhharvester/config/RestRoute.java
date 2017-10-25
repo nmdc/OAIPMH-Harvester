@@ -35,7 +35,7 @@ public class RestRoute extends RouteBuilder {
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("200"))
                 .to("log:end?level=INFO");
 
-        rest("/nmdc").get("/getnmdcmetadata").outType(MetadataServiceType.class)
+        rest("/nmdc").get("/landingpageinfo").outType(MetadataServiceType.class)
                 .param().name("identifier").type(RestParamType.query).endParam()
                 .route()
                 .to("log:start?level=INFO")
