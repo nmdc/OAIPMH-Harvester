@@ -1,13 +1,11 @@
 package no.nmdc.oaipmhharvester.config;
 
-import no.imr.formats.nmdcommon.v2.ListType;
 import no.nmdc.oaipmhharvester.service.NmdcMetadataService;
 import no.nmdc.oaipmhharvester.service.jaxb.MetadataServiceType;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestParamType;
-import org.openarchives.oai.x20.MetadataType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
