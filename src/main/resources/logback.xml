@@ -55,10 +55,10 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>    
-    <logger name="no.nmdc.oaipmhharvester.service.HarvestServiceImpl" level="ERROR" additivity="false">
+    <logger name="no.nmdc.oaipmhharvester.service.HarvestServiceImpl" level="INFO" additivity="false">
         <appender-ref ref="VALIDATIONERROR"/>
     </logger>
     <root level="info">

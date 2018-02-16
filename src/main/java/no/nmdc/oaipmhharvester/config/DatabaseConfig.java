@@ -36,11 +36,16 @@ public class DatabaseConfig {
     @Bean(destroyMethod = "close")
     public DataSource dataSource() throws PropertyVetoException, ConfigurationException {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
+        LOGGER.info("Driver {}", configuration.getString("jdbc.driverClassName"));
         dataSource.setDriverClass(configuration.getString("jdbc.driverClassName"));
+        LOGGER.info("URL {}", configuration.getString("jdbc.url"));
         dataSource.setJdbcUrl(configuration.getString("jdbc.url"));
+        LOGGER.info("username {}", configuration.getString("jdbc.username"));
         dataSource.setUser(configuration.getString("jdbc.username"));
         dataSource.setPassword(configuration.getString("jdbc.password"));
+        LOGGER.info("maxPoolSize {}", configuration.getString("jdbc.maxPoolSize"));
         dataSource.setMaxPoolSize(configuration.getInt("jdbc.maxPoolSize"));
+        LOGGER.info("minPoolSize {}", configuration.getString("jdbc.minPoolSize"));
         dataSource.setMinPoolSize(configuration.getInt("jdbc.minPoolSize"));
         dataSource.setAcquireIncrement(configuration.getInt("jdbc.acquireIncrement"));
         dataSource.setIdleConnectionTestPeriod(configuration.getInt("jdbc.idleConnectionTestPeriod"));

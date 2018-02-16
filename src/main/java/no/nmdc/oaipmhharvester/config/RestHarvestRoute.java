@@ -1,8 +1,6 @@
 package no.nmdc.oaipmhharvester.config;
 
-import com.sun.javafx.binding.Logging;
 import no.nmdc.oaipmhharvester.service.HarvestService;
-import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

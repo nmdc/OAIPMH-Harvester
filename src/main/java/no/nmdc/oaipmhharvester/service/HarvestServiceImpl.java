@@ -18,6 +18,8 @@ import no.nmdc.oaipmhharvester.dao.DatasetDao;
 import no.nmdc.oaipmhharvester.dao.SolrDao;
 import no.nmdc.oaipmhharvester.dao.dto.Dataset;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
+import no.nmdc.oaipmhharvester.service.pojo.ListRecordsResponse;
+import no.nmdc.oaipmhharvester.service.pojo.ParseAndWriteResponse;
 import org.apache.camel.Exchange;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
@@ -59,48 +61,55 @@ public class HarvestServiceImpl implements HarvestService {
 
     @Autowired
     private SolrDao solrDao;
-    
+
     @Transactional
     @Override
     public void harvest(Exchange exchange) {
-        synchronized (HarvestServiceImpl.class) {
-            Calendar startTime = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
-            LOGGER.info("Start harvesting.");
-            Map<String, Object> out = exchange.getOut().getHeaders();
-            List<String> listHash = new ArrayList();
-            List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
-            LOGGER.info("Harvesting servers {}.", servers.toArray());
-            List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList("metadata.format");
-            for (String server : servers) {
-                LOGGER.info("Starting from server {}", server);
-                List<MetadataFormatType> metadataFormatTypes = null;
-                String url = harvesterConfiguration.getString(server.concat(".baseurl"));
-                String set = harvesterConfiguration.getString(server.concat(".set"));
-                try {
-                    LOGGER.info("Getting metadata formats.");
-                    metadataFormatTypes = oaipmhService.getListMetadataFormat(url, null);
-                    LOGGER.info("Getting metadata formats {}.", metadataFormatTypes.toArray());
-                } catch (XmlException | IOException ex) {
-                    LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while getting metadata formats from: " + server, ex);
-                }
-                if (metadataFormatTypes != null) {
-                    for (MetadataFormatType mft : metadataFormatTypes) {
-                        for (String metadataFormat : metadataFormats) {
-                            LOGGER.info("Get metadata format {}.", metadataFormat);
-                            if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
-                                try {
-                                    listHash.addAll(parseAndWriteMetadata(url, mft, set, out));
-                                } catch (XmlException | IOException | OAIPMHException ex) {
-                                    LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while harvesting from: "
-                                            + server + "\nUsing format: " + mft.getMetadataPrefix(), ex);
+        boolean hasFailed = false;
+        Calendar startTime = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        LOGGER.info("Start harvesting.");
+        Map<String, Object> out = exchange.getOut().getHeaders();
+        List<String> listHash = new ArrayList();
+        List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
+        LOGGER.info("Harvesting servers {}.", servers.toArray());
+        List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList("metadata.format");
+        for (String server : servers) {
+            LOGGER.info("Starting from server {}", server);
+            List<MetadataFormatType> metadataFormatTypes = null;
+            String url = harvesterConfiguration.getString(server.concat(".baseurl"));
+            String set = harvesterConfiguration.getString(server.concat(".set"));
+            try {
+                LOGGER.info("Getting metadata formats.");
+                metadataFormatTypes = oaipmhService.getListMetadataFormat(url, null);
+                LOGGER.info("Getting metadata formats {}.", metadataFormatTypes.toArray());
+            } catch (XmlException | IOException ex) {
+                LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while getting metadata formats from: " + server, ex);
+                hasFailed = true;
+            }
+            if (metadataFormatTypes != null) {
+                for (MetadataFormatType mft : metadataFormatTypes) {
+                    for (String metadataFormat : metadataFormats) {
+                        LOGGER.info("Get metadata format {}.", metadataFormat);
+                        if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
+                            try {
+                                List<String> hashes = new ArrayList();
+                                ParseAndWriteResponse res = parseAndWriteMetadata(url, mft, set, out, null, hashes);
+
+                                if (!res.isFailed()) {
+                                    listHash.addAll(hashes);
                                 }
-                                oaipmhService.setCurrentResumptionToken(null);
-                                break;
+                            } catch (XmlException | IOException | OAIPMHException ex) {
+                                LoggerFactory.getLogger(HarvestServiceImpl.class).error("Exception thrown while harvesting from: "
+                                        + server + "\nUsing format: " + mft.getMetadataPrefix(), ex);
+                                hasFailed = true;
                             }
+                            break;
                         }
                     }
                 }
             }
+        }
+        if (!hasFailed) {
             List<Dataset> datasets = datasetDao.getUpdatedOlderThan(startTime);
             for (Dataset dataset : datasets) {
                 FileUtils.deleteQuietly(new File(dataset.getFilenameDif()));
@@ -111,15 +120,17 @@ public class HarvestServiceImpl implements HarvestService {
                 solrDao.delete(dataset.getIdentifier());
             }
         }
+
     }
 
-    private List<String> parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out) throws XmlException, IOException, OAIPMHException {
+    private ParseAndWriteResponse parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out, String resumptionToken, List<String> hashes) throws XmlException, IOException, OAIPMHException {
+        ParseAndWriteResponse res = new ParseAndWriteResponse();
         List<String> listHash = new ArrayList();
         LOGGER.info("List records");
-        List<RecordType> records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, oaipmhService.getCurrentResumptionToken(), set);
+        ListRecordsResponse records = oaipmhService.getListRecords(baseUrl, mft.getMetadataPrefix(), null, null, resumptionToken, set);
         LOGGER.info("Records retrieved");
-        if (records != null) {
-            for (RecordType record : records) {
+        if (records != null && records.getRecords() != null) {
+            for (RecordType record : records.getRecords()) {
                 String identifier = record.getHeader().getIdentifier();
                 String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                 if (record.getHeader().getStatus() != DELETED) {
@@ -139,6 +150,8 @@ public class HarvestServiceImpl implements HarvestService {
                         if (record.getMetadata() != null) {
                             File file = new File(filenameHarvested);
                             LOGGER.info("Writing to file {}", file.getAbsolutePath());
+                            LOGGER.info("Parent {}", file.getParentFile().getAbsolutePath());
+                            LOGGER.info("Parent directory exists : {}, Parent isDirectory : {}, File exists : {}", file.getParentFile().exists(), file.getParentFile().isDirectory(), file.exists());
                             FileUtils.writeStringToFile(file, record.getMetadata().xmlText(), "UTF-8");
                         } else {
                             LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
@@ -163,12 +176,14 @@ public class HarvestServiceImpl implements HarvestService {
                         LOGGER.error("Warning exception", dke);
                     }
                 }
-                if (oaipmhService.getCurrentResumptionToken() != null) {
-                    parseAndWriteMetadata(baseUrl, mft, set, out);
-                }
+
             }
         }
-        return listHash;
+        if (records.getResumptionToken() != null) {
+            parseAndWriteMetadata(baseUrl, mft, set, out, records.getResumptionToken(), hashes);
+        }
+        hashes.addAll(listHash);
+        return res;
     }
 
     private String getOriginatingCenter(String xmlText) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException {

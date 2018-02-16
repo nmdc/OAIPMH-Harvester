@@ -24,7 +24,7 @@ public class ApplicationInit extends AbstractDispatcherServletInitializer {
     @Override
     protected WebApplicationContext createRootApplicationContext() {
         AnnotationConfigWebApplicationContext cxt = new AnnotationConfigWebApplicationContext();
-        cxt.scan("no.nmdc.oaipmhharvester.config", "no.nmdc.oaipmhharvester.service", "no.nmdc.oaipmhharvester.dao", "no.nmdc.oaipmhharvester.controller");
+        cxt.scan("no.nmdc.oaipmhharvester.config", "no.nmdc.oaipmhharvester.service", "no.nmdc.oaipmhharvester.dao", "no.nmdc.oaipmhharvester.controller", "no.nmdc.oaipmhharvester.exchnage");
         return cxt;
     }
 

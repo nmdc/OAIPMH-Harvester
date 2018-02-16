@@ -5,12 +5,14 @@ import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 import no.nmdc.oaipmhharvester.exception.OAIPMHException;
+import no.nmdc.oaipmhharvester.service.pojo.ListIdentifiersResponse;
+import no.nmdc.oaipmhharvester.service.pojo.ListRecordsResponse;
+import no.nmdc.oaipmhharvester.service.pojo.ListSetsResponse;
 import org.apache.xmlbeans.XmlException;
 import org.openarchives.oai.x20.HeaderType;
 import org.openarchives.oai.x20.IdentifyType;
 import org.openarchives.oai.x20.MetadataFormatType;
 import org.openarchives.oai.x20.RecordType;
-import org.openarchives.oai.x20.SetType;
 
 /**
  * Service that implements all OAI-PMH service requests
@@ -55,7 +57,7 @@ public interface OAIPMHService {
      * @throws XmlException
      * @throws IOException
      */
-    List<RecordType> getListRecords(final String url, final String metadataPrefix, final Date from, final Date until, final String resumptionToken, final String set) throws MalformedURLException, OAIPMHException, XmlException, IOException;
+    ListRecordsResponse getListRecords(final String url, final String metadataPrefix, final Date from, final Date until, final String resumptionToken, final String set) throws MalformedURLException, OAIPMHException, XmlException, IOException;
 
     /**
      * Get a list of HeaderTypes that contains information about the datasets
@@ -77,7 +79,7 @@ public interface OAIPMHService {
      * @throws XmlException
      * @throws IOException
      */
-    List<HeaderType> getListIdentifiers(String url, String metadataPrefix, Date from, Date until, String set, String resumptionToken) throws MalformedURLException, OAIPMHException, XmlException, IOException;
+    ListIdentifiersResponse getListIdentifiers(String url, String metadataPrefix, Date from, Date until, String set, String resumptionToken) throws MalformedURLException, OAIPMHException, XmlException, IOException;
 
     /**
      * Perform the Identify verb on a OAI-PMH server
@@ -114,23 +116,6 @@ public interface OAIPMHService {
      * @throws XmlException
      * @throws IOException
      */
-    List<SetType> getListSets(String url, String resumptionToken) throws MalformedURLException, XmlException, IOException;
+    ListSetsResponse getListSets(String url, String resumptionToken) throws MalformedURLException, XmlException, IOException;
 
-    /**
-     * Get the last resumption token retrieved. The system doesn't keep track of
-     * what verb it was used with so the outside class must take care of that
-     *
-     * If a call that returned no resumption token has been performed this
-     * method will return null;
-     *
-     * @return currently last retrieved resumption token
-     */
-    String getCurrentResumptionToken();
-
-    /**
-     * Set the resumption token
-     *
-     * @param string
-     */
-    void setCurrentResumptionToken(String string);
 }
