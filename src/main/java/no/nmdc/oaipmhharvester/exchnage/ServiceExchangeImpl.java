@@ -7,6 +7,7 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ServiceExchangeImpl implements Processor, ServiceExchange {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExchangeImpl.class);    
-    
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExchangeImpl.class);
+
     @Autowired
     private DatasetDao datasetDao;
 
@@ -26,15 +27,15 @@ public class ServiceExchangeImpl implements Processor, ServiceExchange {
     @Override
     public void process(Exchange exchange) throws Exception {
         try {
-        LOGGER.info("Processing serviceexchange.");
-        exchange.getOut().setHeaders(exchange.getIn().getHeaders());
-        Dataset dataset = datasetDao.findByFilenameHarvested(exchange.getIn().getHeader("CamelFileAbsolutePath", String.class));
-        LOGGER.info("Found dataset {}.", dataset != null);
-        exchange.getOut().setHeader("identifier", dataset.getIdentifier());
-        exchange.getOut().setBody(exchange.getIn().getBody());
-        LOGGER.info("Finishing serviceexchange.");
-        } catch(Exception ex) {
-            LOGGER.error("Exception occured.", ex);
+            LOGGER.info("Processing serviceexchange.");
+            exchange.getOut().setHeaders(exchange.getIn().getHeaders());
+            Dataset dataset = datasetDao.findByFilenameHarvested(exchange.getIn().getHeader("CamelFileAbsolutePath", String.class));
+            LOGGER.info("Found dataset {}.", dataset != null);
+            exchange.getOut().setHeader("identifier", dataset.getIdentifier());
+            exchange.getOut().setBody(exchange.getIn().getBody());
+            LOGGER.info("Finishing serviceexchange.");
+        } catch (DataAccessException ex) {
+            LOGGER.error("DataAccessException occured.", ex);
         }
     }
 }
