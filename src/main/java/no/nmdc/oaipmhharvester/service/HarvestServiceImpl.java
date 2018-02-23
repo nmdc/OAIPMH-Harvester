@@ -11,6 +11,7 @@ import java.util.TimeZone;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -72,8 +73,8 @@ public class HarvestServiceImpl implements HarvestService {
         List<String> listHash = new ArrayList();
         List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
         LOGGER.info("Harvesting servers {}.", servers.toArray());
-        List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList("metadata.format");
         for (String server : servers) {
+            List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList(server + ".metadata.formats");                    
             LOGGER.info("Starting from server {}", server);
             List<MetadataFormatType> metadataFormatTypes = null;
             String url = harvesterConfiguration.getString(server.concat(".baseurl"));
@@ -87,7 +88,7 @@ public class HarvestServiceImpl implements HarvestService {
                 hasFailed = true;
             }
             if (metadataFormatTypes != null) {
-                for (MetadataFormatType mft : metadataFormatTypes) {
+                for (MetadataFormatType mft : metadataFormatTypes) {                    
                     for (String metadataFormat : metadataFormats) {
                         LOGGER.info("Get metadata format {}.", metadataFormat);
                         if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
@@ -131,7 +132,8 @@ public class HarvestServiceImpl implements HarvestService {
         LOGGER.info("Records retrieved");
         if (records != null && records.getRecords() != null) {
             for (RecordType record : records.getRecords()) {
-                String identifier = record.getHeader().getIdentifier();
+                String identifier = record.getHeader().getIdentifier();                
+                
                 String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                 if (record.getHeader().getStatus() != DELETED) {
                     /**

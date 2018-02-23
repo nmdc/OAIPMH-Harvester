@@ -299,14 +299,6 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <port>8084</port>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -364,6 +356,33 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+        <profile>
+            <id>kjetilf-deploy</id>
+            <build>
+                <plugins>
+                    <plugin> 
+                        <artifactId>maven-antrun-plugin</artifactId> 
+                        <executions> 
+                            <execution> 
+                                <id>moveFiles</id> 
+                                <phase>install</phase> 
+                                <configuration> 
+                                    <tasks> 
+                                        <copy file="C:\\Users\\kjetilf\\Documents\\gitnew\\applications\\cruise\\backend\\target\\nmdc#oaipmhprovider-${project.version}.war" tofile="C:\\Users\\kjetilf\\Documents\\apps\\apache-tomcat-7.0.78\\webapps\\nmdc#provider.war"/>
+                                        <copy todir="C:\\Users\\kjetilf\\Documents\\apps\\apache-tomcat-7.0.78\\appconf" flatten="true" overwrite="true" verbose="true" failonerror="true"> 
+                                            <fileset dir="." includes="configuration/development-kjetilf/*.*"/> 
+                                        </copy>                 
+                                    </tasks> 
+                                </configuration> 
+                                <goals> 
+                                    <goal>run</goal> 
+                                </goals> 
+                            </execution> 
+                        </executions> 
+                    </plugin> 
+                </plugins>
+            </build>
+        </profile>
+    </profiles>        
     
 </project>
