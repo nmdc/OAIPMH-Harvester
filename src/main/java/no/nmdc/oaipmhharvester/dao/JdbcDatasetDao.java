@@ -57,7 +57,11 @@ public class JdbcDatasetDao extends JdbcDaoSupport implements DatasetDao {
     public Dataset findByFilenameHarvested(String filenameHarvested) {
         LOGGER.info("Checking if file exist in db. {}", filenameHarvested);
         LOGGER.info("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center FROM nmdc_v1.dataset where filename_harvested={}", filenameHarvested);
-        return getJdbcTemplate().queryForObject("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center, providername, original_oaipmh_identifier FROM nmdc_v1.dataset where filename_harvested=?", new DatasetRowMapper(), filenameHarvested);
+        List<Dataset> datasets = getJdbcTemplate().query("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center, providername, original_oaipmh_identifier FROM nmdc_v1.dataset where filename_harvested=?", new DatasetRowMapper(), filenameHarvested);
+        if (datasets.size() == 1) {
+            return datasets.get(0);
+        }
+        return null;
     }
 
     @Override
