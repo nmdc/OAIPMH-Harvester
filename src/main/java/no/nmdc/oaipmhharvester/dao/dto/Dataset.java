@@ -41,6 +41,26 @@ public class Dataset {
     
     private String originatingCenter;
     
+    private String providername;
+    
+    private String originalOAOIPMHIdentifier;
+
+    public String getOriginalOAOIPMHIdentifier() {
+        return originalOAOIPMHIdentifier;
+    }
+
+    public void setOriginalOAOIPMHIdentifier(String originalOAOIPMHIdentifier) {
+        this.originalOAOIPMHIdentifier = originalOAOIPMHIdentifier;
+    }
+
+    public void setProvidername(String providername) {
+        this.providername = providername;
+    }
+
+    public String getProvidername() {
+        return providername;
+    }       
+    
     public String getId() {
         return id;
     }

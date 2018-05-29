@@ -27,6 +27,8 @@ class DatasetRowMapper implements RowMapper<Dataset> {
         dataset.setFilenameNmdc(rs.getString("filename_nmdc"));
         dataset.setFilenamehtml(rs.getString("filename_html"));
         dataset.setOriginatingCenter(rs.getString("originating_center"));
+        dataset.setOriginalOAOIPMHIdentifier(rs.getString("original_oaipmh_identifier"));
+        dataset.setProvidername(rs.getString("providername"));
         return dataset;
     }    
 }

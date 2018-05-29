@@ -38,7 +38,6 @@ public class OAIPMHServiceImpl implements OAIPMHService {
      */
     private static final Logger logger = LoggerFactory.getLogger(OAIPMHServiceImpl.class);
 
-
     @Override
     public List<MetadataFormatType> getListMetadataFormat(final String url, final String identifier) throws MalformedURLException, XmlException, IOException {
         LoggerFactory.getLogger(OAIPMHServiceImpl.class).debug("getListMetadataFormat");
@@ -76,28 +75,30 @@ public class OAIPMHServiceImpl implements OAIPMHService {
             if (set != null) {
                 privateUrl = privateUrl.concat("&set=").concat(set);
             }
-            
+
             performUrl = new URL(privateUrl);
         }
         logger.info("Request url: {}", performUrl);
 
         OAIPMHDocument document = OAIPMHDocument.Factory.parse(performUrl);
         logger.info("Document received.", performUrl);
-        ListRecordsType listrec = document.getOAIPMH().getListRecords();
-        logger.info("Getting list of records.", listrec.sizeOfRecordArray());
+
         if (!(document.getOAIPMH().getErrorArray() != null && document.getOAIPMH().getErrorArray().length > 0)) {
             List<RecordType> records = null;
+            ListRecordsType listrec = document.getOAIPMH().getListRecords();
             if (listrec != null) {
+                logger.info("Getting list of records.", listrec.sizeOfRecordArray());
+
                 records = Arrays.asList(listrec.getRecordArray());
                 listRecordsResponse.setRecords(records);
                 if (listrec.getResumptionToken() != null && listrec.getResumptionToken().getStringValue() != null && !listrec.getResumptionToken().getStringValue().isEmpty()) {
                     listRecordsResponse.setResumptionToken(listrec.getResumptionToken().getStringValue());
-                } 
+                }
             } else {
                 logger.warn("Error getting records {}", document.toString());
             }
         } else {
-            logger.info("Failed due to errors.");                    
+            logger.info("Failed due to errors.");
             failed = true;
         }
         listRecordsResponse.setFailed(failed);
@@ -133,7 +134,7 @@ public class OAIPMHServiceImpl implements OAIPMHService {
         listIdentifiersResponse.setIdentifiers(Arrays.asList(identifiersType.getHeaderArray()));
         if (identifiersType.getResumptionToken() != null && identifiersType.getResumptionToken().getStringValue() != null && !identifiersType.getResumptionToken().getStringValue().isEmpty()) {
             listIdentifiersResponse.setResumptionToken(identifiersType.getResumptionToken().getStringValue());
-        } 
+        }
         return listIdentifiersResponse;
     }
 
@@ -170,7 +171,7 @@ public class OAIPMHServiceImpl implements OAIPMHService {
         listSetsResponse.setSets(Arrays.asList(setType.getSetArray()));
         if (setType.getResumptionToken() != null && setType.getResumptionToken().getStringValue() != null && !setType.getResumptionToken().getStringValue().isEmpty()) {
             listSetsResponse.setResumptionToken(setType.getResumptionToken().getStringValue());
-        } 
+        }
         return listSetsResponse;
     }
 

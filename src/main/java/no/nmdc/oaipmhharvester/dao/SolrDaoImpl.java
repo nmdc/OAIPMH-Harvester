@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -29,6 +30,7 @@ public class SolrDaoImpl implements SolrDao {
 
     @Override
     public void delete(String id) {
+        try {
         LOGGER.info("Deleteing {}", id);
         HttpHeaders headers = new HttpHeaders();
         addAuthHeaders(headers, harvesterConfiguration.getString("solr.username"), harvesterConfiguration.getString("solr.password"));      
@@ -40,6 +42,9 @@ public class SolrDaoImpl implements SolrDao {
             LOGGER.info("Deleted id {}", id);
         } else {
             LOGGER.warn("Failed to delete id {}", id);
+        }
+        } catch(HttpServerErrorException ex) {
+            LOGGER.error("Error deleting from solr.", ex);
         }
     }
 

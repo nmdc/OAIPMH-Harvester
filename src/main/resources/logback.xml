@@ -11,8 +11,9 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover -->
             <fileNamePattern>${catalina.base}/logs/harvesting/oaipmh-harvester.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- Keep 30 days' worth of history -->
             <maxHistory>7</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>    
         </rollingPolicy>
 
         <encoder>
@@ -30,9 +31,9 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover -->
             <fileNamePattern>${catalina.base}/logs/harvesting/oaipmh-harvester_error.%d{yyyy-MM-dd}.log</fileNamePattern>
-
-            <!-- Keep 30 days' worth of history -->
-            <maxHistory>60</maxHistory>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>    
         </rollingPolicy>
 
         <encoder>
@@ -49,9 +50,9 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover -->
             <fileNamePattern>${catalina.base}/logs/harvesting/harvesting_logging.%d{yyyy-MM-dd}.log</fileNamePattern>
-
-            <!-- Keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>    
         </rollingPolicy>
 
         <encoder>
@@ -61,7 +62,7 @@
     <logger name="no.nmdc.oaipmhharvester.service.HarvestServiceImpl" level="INFO" additivity="false">
         <appender-ref ref="VALIDATIONERROR"/>
     </logger>
-    <root level="info">
+    <root level="INFO">
         <appender-ref ref="FILE" />
         <appender-ref ref="FILEERROR" />
     </root>

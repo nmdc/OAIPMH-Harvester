@@ -7,7 +7,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <camel.version>2.18.5</camel.version>
+        <camel.version>2.20.2</camel.version>
         <activemq.version>5.11.1</activemq.version>
         <xbean.version>4.1</xbean.version>
     </properties>
@@ -57,18 +57,18 @@
         <repository>
             <id>nexus-releases</id>
             <name>nexus-releases</name>
-            <url>http://build.imr.no/nexus/repository/releases/</url>
+            <url>http://build.imr.no/nexus/content/repository/releases/</url>
         </repository>
+        <repository>
+            <id>nexus-thirdparty</id>
+            <name>nexus-snapshots</name>
+            <url>http://build.imr.no/nexus/content/repository/thirdparty/</url>
+        </repository> 
         <repository>
             <id>nexus-snapshots</id>
             <name>nexus-snapshots</name>
-            <url>http://build.imr.no/nexus/repository/snapshots/</url>
-        </repository>
-        <repository>
-            <id>internal_nexus</id>
-            <name>Internal IMR nexus must be changed</name>
-            <url>http://javadev.imr.no:8081/nexus/content/repositories/releases</url>
-        </repository>        
+            <url>http://build.imr.no/nexus/content/repository/snapshots/</url>
+        </repository>      
     </repositories>
 
     <dependencies>
@@ -368,8 +368,8 @@
                                 <phase>install</phase> 
                                 <configuration> 
                                     <tasks> 
-                                        <copy file="C:\\Users\\kjetilf\\Documents\\gitnew\\applications\\cruise\\backend\\target\\nmdc#oaipmhprovider-${project.version}.war" tofile="C:\\Users\\kjetilf\\Documents\\apps\\apache-tomcat-7.0.78\\webapps\\nmdc#provider.war"/>
-                                        <copy todir="C:\\Users\\kjetilf\\Documents\\apps\\apache-tomcat-7.0.78\\appconf" flatten="true" overwrite="true" verbose="true" failonerror="true"> 
+                                        <copy file="C:\\Users\\kjetilf\\Documents\\gitnew\\OAIPMH-Harvester\\OAIPMH-Harvester\\target\\OAIPMH-Harvester.war" tofile="C:\\Users\\kjetilf\\Documents\\apps\\apache-tomcat-7.0.78\\webapps\\OAIPMH-Harvester.war"/>
+                                        <copy todir="C:\\Users\\kjetilf\\Documents\\apps\\apache-tomcat-7.0.78\\conf" flatten="true" overwrite="true" verbose="true" failonerror="true"> 
                                             <fileset dir="." includes="configuration/development-kjetilf/*.*"/> 
                                         </copy>                 
                                     </tasks> 

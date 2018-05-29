@@ -2,12 +2,17 @@ package no.nmdc.oaipmhharvester.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import javax.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -63,18 +68,23 @@ public class HarvestServiceImpl implements HarvestService {
     @Autowired
     private SolrDao solrDao;
 
+    @PostConstruct
+    public void init() {
+        harvest(null);
+    }
+
     @Transactional
     @Override
     public void harvest(Exchange exchange) {
         boolean hasFailed = false;
         Calendar startTime = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
         LOGGER.info("Start harvesting.");
-        Map<String, Object> out = exchange.getOut().getHeaders();
+        Map<String, Object> out = new HashMap<String, Object>();
         List<String> listHash = new ArrayList();
         List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
         LOGGER.info("Harvesting servers {}.", servers.toArray());
         for (String server : servers) {
-            List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList(server + ".metadata.formats");                    
+            List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList(server + ".metadata.formats");
             LOGGER.info("Starting from server {}", server);
             List<MetadataFormatType> metadataFormatTypes = null;
             String url = harvesterConfiguration.getString(server.concat(".baseurl"));
@@ -88,13 +98,13 @@ public class HarvestServiceImpl implements HarvestService {
                 hasFailed = true;
             }
             if (metadataFormatTypes != null) {
-                for (MetadataFormatType mft : metadataFormatTypes) {                    
+                for (MetadataFormatType mft : metadataFormatTypes) {
                     for (String metadataFormat : metadataFormats) {
                         LOGGER.info("Get metadata format {}.", metadataFormat);
                         if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
                             try {
                                 List<String> hashes = new ArrayList();
-                                ParseAndWriteResponse res = parseAndWriteMetadata(url, mft, set, out, null, hashes);
+                                ParseAndWriteResponse res = parseAndWriteMetadata(url, mft, set, out, null, hashes, server);
 
                                 if (!res.isFailed()) {
                                     listHash.addAll(hashes);
@@ -124,7 +134,7 @@ public class HarvestServiceImpl implements HarvestService {
 
     }
 
-    private ParseAndWriteResponse parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out, String resumptionToken, List<String> hashes) throws XmlException, IOException, OAIPMHException {
+    private ParseAndWriteResponse parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out, String resumptionToken, List<String> hashes, String providername) throws XmlException, IOException, OAIPMHException {
         ParseAndWriteResponse res = new ParseAndWriteResponse();
         List<String> listHash = new ArrayList();
         LOGGER.info("List records");
@@ -132,8 +142,9 @@ public class HarvestServiceImpl implements HarvestService {
         LOGGER.info("Records retrieved");
         if (records != null && records.getRecords() != null) {
             for (RecordType record : records.getRecords()) {
-                String identifier = record.getHeader().getIdentifier();                
-                
+                String identifier = new String(DigestUtils.md5DigestAsHex((record.getHeader().getIdentifier() + "." + providername).getBytes()));
+
+                String originalIdentifier = record.getHeader().getIdentifier();
                 String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                 if (record.getHeader().getStatus() != DELETED) {
                     /**
@@ -161,11 +172,11 @@ public class HarvestServiceImpl implements HarvestService {
                         if (datasetDao.notExists(record.getHeader().getIdentifier())) {
                             LOGGER.info("Inserting metadata in db.");
                             String originatingCenter = getOriginatingCenter(record.getMetadata().xmlText());
-                            datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter);
+                            datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter, providername, originalIdentifier);
                         } else {
                             LOGGER.info("Updating metadata in db.");
                             String originatingCenter = getOriginatingCenter(record.getMetadata().xmlText());
-                            datasetDao.update(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter);
+                            datasetDao.update(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter, providername, originalIdentifier);
                         }
                         LOGGER.info("Identifier {}", identifier);
                         out.put("identifer", identifier);
@@ -182,7 +193,7 @@ public class HarvestServiceImpl implements HarvestService {
             }
         }
         if (records.getResumptionToken() != null) {
-            parseAndWriteMetadata(baseUrl, mft, set, out, records.getResumptionToken(), hashes);
+            parseAndWriteMetadata(baseUrl, mft, set, out, records.getResumptionToken(), hashes, providername);
         }
         hashes.addAll(listHash);
         return res;

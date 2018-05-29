@@ -23,8 +23,10 @@ public interface DatasetDao {
      * @param filenameHtml 
      * @param hash 
      * @param originatingCenter 
+     * @param providername 
+     * @param originalAIIdentifier 
      */
-    void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml, String hash, String originatingCenter);
+    void insert(String providerurl, String identifier, String set, String format, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml, String hash, String originatingCenter, String providername, String originalAIIdentifier);
     /**
      * 
      * @param baseUrl
@@ -37,8 +39,10 @@ public interface DatasetDao {
      * @param filenameHtml
      * @param hash
      * @param originatingCenter 
+     * @param providername 
+     * @param originalAIIdentifier 
      */
-    void update(String baseUrl, String identifier, String set, String metadataNamespace, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml, String hash, String originatingCenter);
+    void update(String baseUrl, String identifier, String set, String metadataNamespace, String filenameHarvested, String filenameDif, String filenameNmdc, String filenameHtml, String hash, String originatingCenter, String providername, String originalAIIdentifier);
     /**
      * 
      * @param identifer
