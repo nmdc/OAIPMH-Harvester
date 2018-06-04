@@ -169,7 +169,7 @@ public class HarvestServiceImpl implements HarvestService {
                         } else {
                             LoggerFactory.getLogger(HarvestServiceImpl.class).error("Error handling record ".concat(record.toString()));
                         }
-                        if (datasetDao.notExists(record.getHeader().getIdentifier())) {
+                        if (datasetDao.notExists(identifier)) {
                             LOGGER.info("Inserting metadata in db.");
                             String originatingCenter = getOriginatingCenter(record.getMetadata().xmlText());
                             datasetDao.insert(baseUrl, identifier, set, mft.getMetadataNamespace(), filenameHarvested, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter, providername, originalIdentifier);

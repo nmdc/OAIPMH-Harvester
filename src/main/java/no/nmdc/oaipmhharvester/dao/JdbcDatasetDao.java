@@ -44,13 +44,17 @@ public class JdbcDatasetDao extends JdbcDaoSupport implements DatasetDao {
         getJdbcTemplate().update("UPDATE nmdc_v1.dataset\n"
                 + "   SET filename_harvested=?, providerurl=?, schema=?, updated_by=?, \n"
                 + "       updated_time=?, set=?, \n"
-                + "       filename_dif=?, filename_nmdc=?, filename_html=?, hash=?, originating_center=?, providername, original_oaipmh_identifier, providername=?, original_oaipmh_identifier=?\n"
-                + " WHERE identifier=?;", filenameHarvested, providerurl, format, "nmdc", updatedTime, set, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter, identifier, providername, originalAIIdentifier);
+                + "       filename_dif=?, filename_nmdc=?, filename_html=?, hash=?, originating_center=?, original_oaipmh_identifier=?, providername=?\n"
+                + " WHERE identifier=?;", filenameHarvested, providerurl, format, "nmdc", updatedTime, set, filenameDif, filenameNmdc, filenameHtml, hash, originatingCenter, originalAIIdentifier, providername, identifier);
     }
 
     @Override
     public boolean notExists(String identifer) {
-        return getJdbcTemplate().queryForObject("select COUNT(*) <= 0 FROM nmdc_v1.dataset WHERE identifier = ?", Boolean.class, identifer);
+        List<Boolean> list = getJdbcTemplate().queryForList("select COUNT(*) <= 0 FROM nmdc_v1.dataset WHERE identifier = ?", Boolean.class, identifer );
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+        return false;
     }
 
     @Override
@@ -66,7 +70,11 @@ public class JdbcDatasetDao extends JdbcDaoSupport implements DatasetDao {
 
     @Override
     public Dataset findByIdentifier(String identifier) {
-        return getJdbcTemplate().queryForObject("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center, providername, original_oaipmh_identifier FROM nmdc_v1.dataset where identifier=?", new DatasetRowMapper(), identifier);
+        List<Dataset> datasets = getJdbcTemplate().query("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center, providername, original_oaipmh_identifier FROM nmdc_v1.dataset where identifier=?", new DatasetRowMapper(), identifier);
+        if (datasets.size() == 1) {
+            return datasets.get(0);
+        }
+        return null;        
     }
 
     @Override
