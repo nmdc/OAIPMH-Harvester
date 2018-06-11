@@ -88,4 +88,9 @@ public class JdbcDatasetDao extends JdbcDaoSupport implements DatasetDao {
         return getJdbcTemplate().query("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center, providername, original_oaipmh_identifier FROM nmdc_v1.dataset where updated_time < ?", new Object[] {startTime}, new DatasetRowMapper());
     }
 
+    @Override
+    public List<Dataset> findAll() {
+        return getJdbcTemplate().query("SELECT id, filename_harvested, providerurl, schema, updated_by, inserted_by, updated_time, inserted_time, set, identifier, filename_dif, filename_nmdc, filename_html, hash, originating_center, providername, original_oaipmh_identifier FROM nmdc_v1.dataset", new DatasetRowMapper());
+    }
+
 }

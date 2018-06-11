@@ -58,4 +58,6 @@ public interface DatasetDao {
 
     List<Dataset> getUpdatedOlderThan(Calendar startTime);
 
+    List<Dataset> findAll();
+
 }

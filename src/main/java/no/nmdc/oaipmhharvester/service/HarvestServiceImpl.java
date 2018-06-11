@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
@@ -82,6 +84,8 @@ public class HarvestServiceImpl implements HarvestService {
         Map<String, Object> out = new HashMap<String, Object>();
         List<String> listHash = new ArrayList();
         List<String> servers = (List<String>) (List<?>) harvesterConfiguration.getList("servers.to.harvest");
+        List<Dataset> datasetsPreHarvest = datasetDao.findAll();
+        Set<String> preAllIdentifiers = getAllIdentifiers(datasetsPreHarvest);
         LOGGER.info("Harvesting servers {}.", servers.toArray());
         for (String server : servers) {
             List<String> metadataFormats = (List<String>) (List<?>) harvesterConfiguration.getList(server + ".metadata.formats");
@@ -104,7 +108,7 @@ public class HarvestServiceImpl implements HarvestService {
                         if (mft.getMetadataPrefix().equalsIgnoreCase(metadataFormat)) {
                             try {
                                 List<String> hashes = new ArrayList();
-                                ParseAndWriteResponse res = parseAndWriteMetadata(url, mft, set, out, null, hashes, server);
+                                ParseAndWriteResponse res = parseAndWriteMetadata(url, mft, set, out, null, hashes, server, preAllIdentifiers);
 
                                 if (!res.isFailed()) {
                                     listHash.addAll(hashes);
@@ -130,11 +134,14 @@ public class HarvestServiceImpl implements HarvestService {
                 datasetDao.deleteByIdentifier(dataset.getIdentifier());
                 solrDao.delete(dataset.getIdentifier());
             }
+            for (String identifier : preAllIdentifiers) {
+                datasetDao.deleteByIdentifier(identifier);
+            }
         }
 
     }
 
-    private ParseAndWriteResponse parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out, String resumptionToken, List<String> hashes, String providername) throws XmlException, IOException, OAIPMHException {
+    private ParseAndWriteResponse parseAndWriteMetadata(String baseUrl, MetadataFormatType mft, String set, Map<String, Object> out, String resumptionToken, List<String> hashes, String providername, Set<String> preAllIdentifiers) throws XmlException, IOException, OAIPMHException {
         ParseAndWriteResponse res = new ParseAndWriteResponse();
         List<String> listHash = new ArrayList();
         LOGGER.info("List records");
@@ -143,7 +150,7 @@ public class HarvestServiceImpl implements HarvestService {
         if (records != null && records.getRecords() != null) {
             for (RecordType record : records.getRecords()) {
                 String identifier = new String(DigestUtils.md5DigestAsHex((record.getHeader().getIdentifier() + "." + providername).getBytes()));
-
+                preAllIdentifiers.remove(identifier);
                 String originalIdentifier = record.getHeader().getIdentifier();
                 String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
                 if (record.getHeader().getStatus() != DELETED) {
@@ -193,7 +200,7 @@ public class HarvestServiceImpl implements HarvestService {
             }
         }
         if (records.getResumptionToken() != null) {
-            parseAndWriteMetadata(baseUrl, mft, set, out, records.getResumptionToken(), hashes, providername);
+            parseAndWriteMetadata(baseUrl, mft, set, out, records.getResumptionToken(), hashes, providername, preAllIdentifiers);
         }
         hashes.addAll(listHash);
         return res;
@@ -245,6 +252,14 @@ public class HarvestServiceImpl implements HarvestService {
         Document doc = builder.parse(IOUtils.toInputStream(xmlText, "UTF-8"));
         XPathExpression xp = XPathFactory.newInstance().newXPath().compile("//Originating_Center");
         return xp.evaluate(doc);
+    }
+
+    private Set<String> getAllIdentifiers(List<Dataset> datasets) {
+        Set<String> identifiers = new HashSet();
+        for (Dataset dataset : datasets) {
+            identifiers.add(dataset.getIdentifier());
+        }
+        return identifiers;
     }
 
 }
