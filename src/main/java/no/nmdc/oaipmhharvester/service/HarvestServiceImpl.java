@@ -152,7 +152,7 @@ public class HarvestServiceImpl implements HarvestService {
                 String identifier = new String(DigestUtils.md5DigestAsHex((record.getHeader().getIdentifier() + "." + providername).getBytes()));
                 preAllIdentifiers.remove(identifier);
                 String originalIdentifier = record.getHeader().getIdentifier();
-                String hash = new String(DigestUtils.md5DigestAsHex(identifier.getBytes()));
+                String hash = new String(DigestUtils.md5DigestAsHex(originalIdentifier.getBytes()));
                 if (record.getHeader().getStatus() != DELETED) {
                     /**
                      * Insert record.
