@@ -26,7 +26,7 @@ public class RestRoute extends RouteBuilder {
 
         rest("/harvest").get("/start").route()
                 .to("log:start?level=INFO")
-                .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
+                .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000).log(RestRoute.class))
                 .to("jms:queue:nmdc/start-harvest")
                 .setBody(constant("Job queued."))
                 .setHeader(Exchange.CONTENT_TYPE, constant("text/plain"))
@@ -37,7 +37,7 @@ public class RestRoute extends RouteBuilder {
                 .param().name("identifier").type(RestParamType.query).endParam()
                 .route()
                 .to("log:start?level=INFO")
-                .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000))
+                .errorHandler(deadLetterChannel("jms:queue:dead").maximumRedeliveries(3).redeliveryDelay(30000).log(RestRoute.class))
                 .bean(metadataService, "getNmdcMetadata")
                 .to("log:end?level=INFO");
 
